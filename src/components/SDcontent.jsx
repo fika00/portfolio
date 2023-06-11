@@ -32,27 +32,52 @@ const SDcontent = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const displacediv = document.getElementById("displace");
   const [isOn, setIsOn] = useState(false);
+  const detailed = useRef(false);
 
   useEffect(() => {
     if (isOn) {
-      document.getElementById("imgcont").style.height = "100%";
+      document.getElementById("img").style.transform = "scale(1.2)";
+      document.getElementById("img").style.filter =
+        "drop-shadow(10px 25px 8px #0049525C)";
       const intv = setInterval(() => {
         displacediv.setAttribute("scale", `${Math.random() * 30}`);
       }, 2);
       setTimeout(() => {
         clearInterval(intv);
         displacediv.setAttribute("scale", "0");
-      }, 500);
+      }, 600);
     } else {
-      document.getElementById("imgcont").style.height = "90%";
+      document.getElementById("img").style.filter =
+        "drop-shadow(0px 0px 0px #0049525C)";
+      document.getElementById("img").style.transform = "scale(1)";
     }
   }, [isOn]);
+  // Click for Details
+  const handleClick = () => {
+    const increment = setInterval(() => {
+      const scalerat = Math.random() * (60 - -60) + -60;
 
+      displacediv.setAttribute("scale", `${scalerat}`);
+    }, Math.random() * 12);
+    if (!detailed.current) {
+      document.getElementById("img").style.opacity = 0;
+      document.getElementById("paragraph").style.opacity = 1;
+      detailed.current = true;
+    } else {
+      document.getElementById("img").style.opacity = 1;
+      document.getElementById("paragraph").style.opacity = 0;
+      detailed.current = false;
+    }
+    setTimeout(() => {
+      clearInterval(increment);
+      displacediv.setAttribute("scale", `0`);
+    }, 800);
+  };
   const handleNext = () => {
     if (currentIndex < titles.length - 1) {
       //Animating the displacement
       const increment = setInterval(() => {
-        const scalerat = Math.random() * (60 - -60) + -60;
+        const scalerat = Math.random() * (30 - -30) + -30;
 
         displacediv.setAttribute("scale", `${scalerat}`);
       }, Math.random() * 12);
@@ -73,7 +98,7 @@ const SDcontent = (props) => {
       document.getElementById("img").style.filter = "blur(10px)";
       //Animating the displacement
       const increment = setInterval(() => {
-        const scalerat = Math.random() * (60 - -60) + -60;
+        const scalerat = Math.random() * (15 - -15) + -15;
 
         displacediv.setAttribute("scale", `${scalerat}`);
       }, Math.random() * 12);
@@ -95,7 +120,7 @@ const SDcontent = (props) => {
     if (currentIndex > 0) {
       //Animating the displacement
       const increment = setInterval(() => {
-        const scalerat = Math.random() * (60 - -60) + -60;
+        const scalerat = Math.random() * (30 - -30) + -30;
 
         displacediv.setAttribute("scale", `${scalerat}`);
       }, Math.random() * 12);
@@ -114,7 +139,7 @@ const SDcontent = (props) => {
     } else {
       //Animating the displacement
       const increment = setInterval(() => {
-        const scalerat = Math.random() * (60 - -60) + -60;
+        const scalerat = Math.random() * (30 - -30) + -30;
 
         displacediv.setAttribute("scale", `${scalerat}`);
       }, Math.random() * 12);
@@ -153,20 +178,29 @@ const SDcontent = (props) => {
           className="imgcont"
           id="imgcont"
           style={{
-            filter: "url(#displacementFilter)",
-            // backgroundColor: "black",
             zIndex: 1000,
           }}
         >
+          <div id="paragraph" className="paratext">
+            <p>{paras[currentIndex]}</p>
+            <div className="tools">
+              {tools[currentIndex].map((tool) => (
+                <div className="lang">
+                  <p className="actualtext"> {tool}</p>
+                </div>
+              ))}
+            </div>
+          </div>
           <img
             onMouseEnter={() => setIsOn(true)}
             onMouseLeave={() => setIsOn(false)}
+            onClick={handleClick}
             id="img"
             src={logos[currentIndex]}
             alt=""
             style={{
               transition: "1s",
-              height: "100%",
+              zIndex: 15,
             }}
           />
         </div>
@@ -177,7 +211,7 @@ const SDcontent = (props) => {
               <feImage
                 xlinkHref={displacement}
                 result="displacementMap"
-                scale={0.1}
+                scale={1}
               />
               <feDisplacementMap
                 in="SourceGraphic"
@@ -190,18 +224,9 @@ const SDcontent = (props) => {
             </filter>
           </defs>
         </svg>
-        {/* <img
-          src={rip}
-          alt=""
-          className="rip"
-          style={{
-            position: "absolute",
-            left: 0,
-          }}
-        /> */}
 
         <div className="arrows">
-          <div className="arrow" onClick={handleBack}>
+          <div className="arrow left" onClick={handleBack}>
             <h1
               style={{
                 fontSize: "15px",
@@ -212,7 +237,7 @@ const SDcontent = (props) => {
               {"<"}
             </h1>
           </div>
-          <div className="arrow" onClick={handleNext}>
+          <div className="arrow right" onClick={handleNext}>
             <h1
               style={{
                 fontSize: "15px",
