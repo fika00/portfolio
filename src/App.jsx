@@ -36,7 +36,6 @@ import AnimatedText from "./components/AnimatedText";
 import Navbar from "./components/navbar";
 import SDcontent from "./components/SDcontent";
 import VPcontent from "./components/VPcontent";
-import { degToRad } from "three/src/math/mathutils";
 
 function App() {
   const dispatch = useDispatch();
@@ -66,6 +65,7 @@ function App() {
   const diff = useRef(0);
   const detail_dir = useRef(0);
   const videoscale = useRef(0.1);
+  const particleRef = useRef();
 
   const start_pos = [1.25, -0.02, 2.55];
   const start_rot = [0.015, 0.625, -0.0053];
@@ -194,7 +194,9 @@ function App() {
         currentPointRef.current != 1
       ) {
         cont1.style.zIndex = 10;
+        cont1.style.opacity = 1;
         cont2.style.zIndex = 0;
+        cont2.style.opacity = 0;
 
         currentPointRef.current = 1;
         sliceright.style.opacity = 1;
@@ -220,6 +222,8 @@ function App() {
       ) {
         cont2.style.zIndex = 0;
         cont1.style.zIndex = 0;
+        cont2.style.opacity = 0;
+        cont1.style.opacity = 0;
 
         currentPointRef.current = 0;
         sliceright.style.opacity = 0;
@@ -246,6 +250,8 @@ function App() {
       ) {
         cont2.style.zIndex = 10;
         cont1.style.zIndex = 0;
+        cont2.style.opacity = 1;
+        cont1.style.opacity = 0;
 
         currentPointRef.current = 2;
         sliceright.style.opacity = 0;
@@ -322,6 +328,12 @@ function App() {
 
     // console.log("Position: ", camRef.current.position);
     // console.log("Rotation: ", camRef.current.rotation);
+    const scrollb = document.getElementById("scrollbar");
+    if (currentPointRef.current != 0) {
+      scrollb.style.opacity = 1;
+    } else {
+      scrollb.style.opacity = 0;
+    }
 
     animate();
     window.requestAnimationFrame(raf);
@@ -452,6 +464,7 @@ function App() {
               />
             </mesh> */}
           </group>
+
           {/* <group>
             <mesh
               position={[-0.64, -0.08, 0.8]}
@@ -483,6 +496,9 @@ function App() {
         {/* <Stats /> */}
       </Canvas>
       {/* <Navbar /> */}
+      <div id="scrollbar" className="scrollbar">
+        <Scrollbar />
+      </div>
       <div
         id="text"
         className="text"

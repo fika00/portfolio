@@ -10,13 +10,14 @@ import displacement from "/imgs/glitch3.jpg";
 import arrow from "/imgs/arrow.svg";
 import video1 from "/vids/video1.mp4";
 import video2 from "/vids/pol_site.mp4";
-import { current } from "@reduxjs/toolkit";
+import video3 from "/vids/halls.mp4";
 
 const VPcontent = (props) => {
+  const titles = ["My mind.", "Pages of Life.", "Between the walls."];
   const play = useSelector((state) => state.position.play);
   const [start_play, setStart_play] = useState(false);
   const [current_index, setCurrentIndex] = useState(0);
-  const videolist = [video1, video2];
+  const videolist = [video1, video2, video3];
   useEffect(() => {
     if (play == 2) {
       document.getElementById("contentwrapper2").style.opacity = 1;
@@ -44,20 +45,27 @@ const VPcontent = (props) => {
   };
   return (
     <div id="contentwrapper2" className="contentwrapper2">
-      <div className="videoplayer">
-        <ReactPlayer
-          url={videolist[current_index]} // Replace with your video URL
-          playing={start_play} // Set playing to true
-          loop={true} // Set loop to true
-          muted={true}
-          preload="auto"
-          // controls={true}
-          width={"100%"}
-          height={"100%"}
-          playsinline={true}
-        />
-        {/* <div className="darken"></div> */}
+      <div className="videotextwrap">
+        <div className="videoplayer">
+          <ReactPlayer
+            url={videolist[current_index]} // Replace with your video URL
+            playing={start_play} // Set playing to true
+            loop={true} // Set loop to true
+            muted={true}
+            preload="auto"
+            // controls={true}
+            width={"100%"}
+            height={"100%"}
+            playsinline={true}
+          />
+          <div className="darken"></div>
+        </div>
+        <div className="videodetail">
+          <h1>{titles[current_index]}</h1>
+          <p>Some text</p>
+        </div>
       </div>
+
       <div className="contentcontainer">
         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
           <defs>

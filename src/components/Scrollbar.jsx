@@ -6,23 +6,29 @@ const Scrollbar = (props) => {
   const position = useSelector((state) => state.position.value);
 
   useEffect(() => {
-    // console.log(position);
-    const point = Math.abs((Math.round(position) - 0) / (4 - 0)) * 100;
-    if (point != 0) {
-      document.getElementById("whole").style.opacity = 1;
+    if (Math.round(position) == -1) {
+      document.getElementById("p1").style.transform = "scale(4)";
     } else {
-      document.getElementById("whole").style.opacity = 0;
+      document.getElementById("p1").style.transform = "scale(1)";
     }
-
-    document.getElementById("progress").style.height = `${point}%`;
+    if (Math.round(position) == -2) {
+      document.getElementById("p2").style.transform = "scale(4)";
+    } else {
+      document.getElementById("p2").style.transform = "scale(1)";
+    }
+    if (Math.round(position) == -3) {
+      document.getElementById("p3").style.transform = "scale(4)";
+    } else {
+      document.getElementById("p3").style.transform = "scale(1)";
+    }
   }, [position]);
-
   return (
-    <div className="wrapper">
-      <div className="scroll" id="whole">
-        <div className="progress" id="progress"></div>
-      </div>
-      <div className="point1"></div>
+    <div className="scrollbar_wrapper">
+      <div id="p1" className="point"></div>
+      <hr className="line" />
+      <div id="p2" className="point"></div>
+      <hr className="line" />
+      <div id="p3" className="point"></div>
     </div>
   );
 };
