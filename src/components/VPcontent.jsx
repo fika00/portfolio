@@ -9,24 +9,45 @@ import ReactPlayer from "react-player";
 import displacement from "/imgs/glitch3.jpg";
 import arrow from "/imgs/arrow.svg";
 import video1 from "/vids/video1.mp4";
+import video2 from "/vids/pol_site.mp4";
+import { current } from "@reduxjs/toolkit";
 
 const VPcontent = (props) => {
   const play = useSelector((state) => state.position.play);
+  const [start_play, setStart_play] = useState(false);
+  const [current_index, setCurrentIndex] = useState(0);
+  const videolist = [video1, video2];
   useEffect(() => {
     if (play == 2) {
       document.getElementById("contentwrapper2").style.opacity = 1;
       document.getElementById("contentwrapper2").style.zIndex = 9999;
+      setStart_play(true);
     } else {
       document.getElementById("contentwrapper2").style.opacity = 0;
       document.getElementById("contentwrapper2").style.zIndex = 0;
+      setStart_play(false);
     }
   }, [play]);
+  const handleGoNext = () => {
+    if (current_index < videolist.length - 1) {
+      setCurrentIndex(current_index + 1);
+    } else {
+      setCurrentIndex(0);
+    }
+  };
+  const handleGoBack = () => {
+    if (current_index > 0) {
+      setCurrentIndex(current_index - 1);
+    } else {
+      setCurrentIndex(videolist.length - 1);
+    }
+  };
   return (
     <div id="contentwrapper2" className="contentwrapper2">
       <div className="videoplayer">
         <ReactPlayer
-          url={video1} // Replace with your video URL
-          playing={true} // Set playing to true
+          url={videolist[current_index]} // Replace with your video URL
+          playing={start_play} // Set playing to true
           loop={true} // Set loop to true
           muted={true}
           preload="auto"
@@ -58,7 +79,7 @@ const VPcontent = (props) => {
           </defs>
         </svg>
         <div className="arrows">
-          <div className="arrow left">
+          <div className="arrow left" onClick={handleGoBack}>
             <h1
               style={{
                 fontSize: "15px",
@@ -69,7 +90,7 @@ const VPcontent = (props) => {
               {"<"}
             </h1>
           </div>
-          <div className="arrow right">
+          <div className="arrow right" onClick={handleGoNext}>
             <h1
               style={{
                 fontSize: "15px",
