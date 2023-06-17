@@ -158,14 +158,14 @@ const SDcontent = (props) => {
   };
 
   useEffect(() => {
-    if (!play) {
+    if (play == 1) {
       document.getElementById("contentwrapper").style.opacity = 1;
       document.getElementById("contentwrapper").style.zIndex = 9999;
     } else {
       document.getElementById("contentwrapper").style.opacity = 0;
       document.getElementById("contentwrapper").style.zIndex = 0;
     }
-  });
+  }, [play]);
 
   return (
     <div id="contentwrapper" className="contentwrapper">

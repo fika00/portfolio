@@ -36,7 +36,8 @@ const Experience = (props) => {
   nodes.eye.morphTargetInfluences[0] = 0.5;
 
   useEffect(() => {
-    if (!play) {
+    console.log(play);
+    if (play != 0) {
       actions.action_upper.stop();
       actions.action_lower.stop();
     } else {

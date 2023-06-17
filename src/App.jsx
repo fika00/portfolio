@@ -4,6 +4,9 @@ import {
   Stats,
   PerspectiveCamera,
   CameraControls,
+  Html,
+  useVideoTexture,
+  useTexture,
 } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import "./App.css";
@@ -32,6 +35,9 @@ import RandomTextAnimation from "./components/RandomTextAnimation";
 import AnimatedText from "./components/AnimatedText";
 import Navbar from "./components/navbar";
 import SDcontent from "./components/SDcontent";
+import VPcontent from "./components/VPcontent";
+import { degToRad } from "three/src/math/mathutils";
+
 function App() {
   const dispatch = useDispatch();
   function getCurrentDimension() {
@@ -40,12 +46,10 @@ function App() {
       height: window.innerHeight,
     };
   }
-  const dispatch_false = () => {
-    dispatch(setPlay(false));
+  const dispatch_it = (value) => {
+    dispatch(setPlay(value));
   };
-  const dispatch_true = () => {
-    dispatch(setPlay(true));
-  };
+
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
   const isLoadedRef = useRef(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -60,6 +64,8 @@ function App() {
   const roundedRef = useRef(0);
   const eventStart = useRef(false);
   const diff = useRef(0);
+  const detail_dir = useRef(0);
+  const videoscale = useRef(0.1);
 
   const start_pos = [1.25, -0.02, 2.55];
   const start_rot = [0.015, 0.625, -0.0053];
@@ -82,6 +88,15 @@ function App() {
   let point_last = 0;
 
   // To detailed
+
+  useEffect(() => {
+    if (screenSize.width > screenSize.height) {
+      videoscale.current = 0.01;
+    } else {
+      videoscale.current = 0.007;
+    }
+  }, []);
+
   const handleBack = (e) => {
     isScrollableRef.current = false;
     const pos = [0.85, -0.05, 0.79];
@@ -104,8 +119,37 @@ function App() {
       z: rot[2],
       duration: 1.5, // Duration of the animation in seconds
     });
-    dispatch_false();
+    dispatch_it(1);
+    detail_dir.current = 1;
   };
+  const handleBackVP = (e) => {
+    isScrollableRef.current = false;
+    document.getElementById("contentwrap_all").style.opacity = 0;
+    document.getElementById("contentwrap_all").style.filter = "blur(10px)";
+
+    document.getElementById("backbtn").style.opacity = 1;
+
+    const pos = [-0.78, -0.12, 0.99];
+    const rot = [0.19, -0.63, 0.12];
+    gsap.to(camRef.current.position, {
+      x: pos[0],
+      y: pos[1],
+      z: pos[2],
+      duration: 1.5, // Duration of the animation in seconds
+    });
+
+    gsap.to(camRef.current.rotation, {
+      x: rot[0],
+      y: rot[1],
+      z: rot[2],
+      duration: 1.5, // Duration of the animation in seconds
+    });
+    dispatch_it(2);
+    detail_dir.current = 2;
+  };
+
+  // POS {x: -0.7767235553875571, y: -0.11857755762746436, z: 0.9814089152224994}
+  // ROT x: 0.193411614647997, _y: -0.6309042787969638, _z: 0.11502297980563952
 
   // From Detailed
   const handleBackButton = (e) => {
@@ -115,7 +159,8 @@ function App() {
     document.getElementById("contentwrap_all").style.opacity = 1;
     document.getElementById("contentwrap_all").style.filter = "blur(0px)";
 
-    dispatch_true();
+    dispatch_it(0);
+    detail_dir.current = 0;
   };
 
   let rate = 700;
@@ -139,6 +184,8 @@ function App() {
     // );
     const sliceright = document.getElementById("sliceright");
     const sliceleft = document.getElementById("sliceleft");
+    const cont1 = document.getElementById("content1");
+    const cont2 = document.getElementById("content2");
 
     if (isScrollableRef) {
       if (
@@ -146,6 +193,9 @@ function App() {
         positionRef.current >= -1.45 &&
         currentPointRef.current != 1
       ) {
+        cont1.style.zIndex = 10;
+        cont2.style.zIndex = 0;
+
         currentPointRef.current = 1;
         sliceright.style.opacity = 1;
         sliceleft.style.opacity = 0;
@@ -168,6 +218,9 @@ function App() {
         positionRef.current <= 0 &&
         currentPointRef.current != 0
       ) {
+        cont2.style.zIndex = 0;
+        cont1.style.zIndex = 0;
+
         currentPointRef.current = 0;
         sliceright.style.opacity = 0;
         sliceleft.style.opacity = 0;
@@ -191,6 +244,9 @@ function App() {
         positionRef.current >= -2.25 &&
         currentPointRef.current != 2
       ) {
+        cont2.style.zIndex = 10;
+        cont1.style.zIndex = 0;
+
         currentPointRef.current = 2;
         sliceright.style.opacity = 0;
 
@@ -214,11 +270,9 @@ function App() {
   }
 
   if (!eventStart.current) {
-    console.log(eventStart);
     window.addEventListener("wheel", (e) => {
       // e.stopImmediatePropagation();
       speedRef.current += e.deltaY * 0.0005;
-      console.log("DeltaY: ", e.deltaY);
     });
 
     window.addEventListener("touchstart", (e) => {
@@ -244,7 +298,6 @@ function App() {
     if (isScrollableRef.current) {
       positionRef.current -= speedRef.current;
       speedRef.current *= 0.8;
-      console.log(positionRef.current);
 
       if (positionRef.current > 0) {
         roundedRef.current = 0;
@@ -264,9 +317,12 @@ function App() {
     document.getElementById("text").style.transform = `translateY(${
       positionRef.current * rate
     }px)`;
-    console.log("Speed ", speedRef.current.toFixed(3));
 
     icoRef.current.position.y = -positionRef.current * 10;
+
+    // console.log("Position: ", camRef.current.position);
+    // console.log("Rotation: ", camRef.current.rotation);
+
     animate();
     window.requestAnimationFrame(raf);
   }
@@ -286,7 +342,10 @@ function App() {
 
   // const bgcolor = "rgb(97, 75, 92)";
   const bgcolor = 0x343873;
-
+  function VideoMaterial({ url }) {
+    const texture = useVideoTexture(url);
+    return <meshBasicMaterial map={texture} />;
+  }
   return (
     <div
       style={{
@@ -302,9 +361,7 @@ function App() {
           left: "2vh",
           zIndex: 200,
         }}
-      >
-        {/* <Scrollbar /> */}
-      </div>
+      ></div>
       <Canvas
         gl={{ toneMapping: LinearToneMapping, gammaOutput: true }}
         style={{
@@ -395,7 +452,16 @@ function App() {
               />
             </mesh> */}
           </group>
-
+          {/* <group>
+            <mesh
+              position={[-0.64, -0.08, 0.8]}
+              scale={0.02}
+              rotation={[0, degToRad(-40), 0]}
+            >
+              <planeGeometry args={[16, 9]} />
+              <VideoMaterial url={"vids/video1.mp4"} />
+            </mesh>
+          </group> */}
           <EffectComposer>
             <Noise
               premultiply
@@ -462,14 +528,13 @@ function App() {
               />
             </p>
             <hr id="sliceleft" className="slice left" />
-            <div onClick={handleBack}>
+            <div onClick={handleBackVP}>
               <AnimatedText text={"Video Production"} cl={2} />
             </div>
           </div>
         </div>
       </div>
-
-      <div id="detailedcontent" className="detailedcontent">
+      <div id="detailedcontentSD" className="detailedcontent">
         <div
           id="backbtn"
           style={{
@@ -485,6 +550,23 @@ function App() {
           Back
         </div>
         <SDcontent />
+      </div>
+      <div id="detailedcontentVP" className="detailedcontent">
+        <div
+          id="backbtn"
+          style={{
+            position: "absolute",
+            left: 10,
+            top: 10,
+            zIndex: 1000,
+            opacity: 0,
+            transition: "1s",
+          }}
+          onClick={handleBackButton}
+        >
+          Back
+        </div>
+        <VPcontent />
       </div>
     </div>
   );

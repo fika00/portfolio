@@ -135,6 +135,9 @@
   opacity: 0;
   filter: blur(0px);
 }
+.testing {
+  backdrop-filter: blur(10px);
+}
 @media only screen and (max-width: 600px) {
   .para,
   .para.right {

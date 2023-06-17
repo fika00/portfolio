@@ -5,7 +5,7 @@ export const positionSlice = createSlice({
   initialState: {
     value: 0,
     point: 0,
-    play: true,
+    play: 0,
   },
   reducers: {
     setPosition: (state, action) => {
