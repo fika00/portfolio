@@ -8,12 +8,20 @@ import ReactPlayer from "react-player";
 
 import displacement from "/imgs/glitch3.jpg";
 import arrow from "/imgs/arrow.svg";
+import loading from "/loading.svg";
 import video1 from "/vids/video1.mp4";
 import video2 from "/vids/pol_site.mp4";
 import video3 from "/vids/halls.mp4";
+import Loader from "./Loader";
 
 const VPcontent = (props) => {
   const titles = ["My mind.", "Pages of Life.", "Between the walls."];
+  const text = [
+    "My mind is a movie directed by my friend for which I've done this transition.",
+    "Pages of Life tells a story about the importance of memories. For this movie I've done the special effects in the intro.",
+    "A video I made for a music track of mine. I love mixing real and CGI elemnts to tell a story.",
+  ];
+  const platforms = ["After Effects", "Premiere", "Blender", "FL Studio"];
   const play = useSelector((state) => state.position.play);
   const [start_play, setStart_play] = useState(false);
   const [current_index, setCurrentIndex] = useState(0);
@@ -29,19 +37,39 @@ const VPcontent = (props) => {
       setStart_play(false);
     }
   }, [play]);
+  const darkenIt = () => {
+    const darkenDiv = document.getElementById("darken");
+    const loader = document.getElementById("loader");
+
+    darkenDiv.style.backgroundColor = "#000000";
+    loader.style.opacity = 1;
+  };
   const handleGoNext = () => {
-    if (current_index < videolist.length - 1) {
-      setCurrentIndex(current_index + 1);
-    } else {
-      setCurrentIndex(0);
-    }
+    darkenIt();
+    setTimeout(() => {
+      if (current_index < videolist.length - 1) {
+        setCurrentIndex(current_index + 1);
+      } else {
+        setCurrentIndex(0);
+      }
+    }, 500);
   };
   const handleGoBack = () => {
-    if (current_index > 0) {
-      setCurrentIndex(current_index - 1);
-    } else {
-      setCurrentIndex(videolist.length - 1);
-    }
+    darkenIt();
+    setTimeout(() => {
+      if (current_index > 0) {
+        setCurrentIndex(current_index - 1);
+      } else {
+        setCurrentIndex(videolist.length - 1);
+      }
+    }, 500);
+  };
+  const handleReady = () => {
+    const darkenDiv = document.getElementById("darken");
+    const loader = document.getElementById("loader");
+
+    darkenDiv.style.backgroundColor = "#00000000";
+    loader.style.opacity = 0;
   };
   return (
     <div id="contentwrapper2" className="contentwrapper2">
@@ -57,12 +85,16 @@ const VPcontent = (props) => {
             width={"100%"}
             height={"100%"}
             playsinline={true}
+            onReady={handleReady}
           />
-          <div className="darken"></div>
+          <div id="darken" className="darken"></div>
+          <div id="loader" className="loader">
+            <Loader />
+          </div>
         </div>
         <div className="videodetail">
-          <h1>{titles[current_index]}</h1>
-          <p>Some text</p>
+          <h1 className="vidtitle">{titles[current_index]}</h1>
+          <p>{text[current_index]}</p>
         </div>
       </div>
 

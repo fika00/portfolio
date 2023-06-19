@@ -19,6 +19,10 @@
   background-color: white;
   border-radius: 10px;
 }
+.f {
+  height: 5px;
+  opacity: 30%;
+}
 .point {
   box-shadow: inset 0 0 2px aqua;
   aspect-ratio: 1;

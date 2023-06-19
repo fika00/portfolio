@@ -24,6 +24,8 @@ const Scrollbar = (props) => {
   }, [position]);
   return (
     <div className="scrollbar_wrapper">
+      <hr className="line f" />
+
       <div id="p1" className="point"></div>
       <hr className="line" />
       <div id="p2" className="point"></div>

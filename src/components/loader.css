@@ -1,0 +1,14 @@
+@font-face {
+  font-family: alarmclock;
+  src: url(alarmclock.ttf) format("truetype");
+}
+.load {
+  font-family: alarmclock, sans-serif;
+  text-align: center;
+  font-size: 3rem;
+}
+@media only screen and (max-width: 600px) {
+  .load {
+    font-size: 1.5rem;
+  }
+}

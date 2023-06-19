@@ -176,12 +176,6 @@ function App() {
 
   // let currentPoint = 0;
   function animate() {
-    // console.log(
-    //   "POS: ",
-    //   positionRef.current.toFixed(1),
-    //   "CURR: ",
-    //   currentPointRef.current
-    // );
     const sliceright = document.getElementById("sliceright");
     const sliceleft = document.getElementById("sliceleft");
     const cont1 = document.getElementById("content1");
@@ -314,7 +308,18 @@ function App() {
         diff.current = roundedRef.current - positionRef.current;
         positionRef.current += diff.current * 0.03;
       }
+
+      if (positionRef.current < -3) {
+        roundedRef.current = -3;
+        diff.current = roundedRef.current - positionRef.current;
+        positionRef.current += diff.current * 0.1;
+      } else {
+        roundedRef.current = Math.round(positionRef.current);
+        diff.current = roundedRef.current - positionRef.current;
+        positionRef.current += diff.current * 0.03;
+      }
     }
+
     if (pos_last != positionRef.current.toFixed(3)) {
       dispatch(setPosition(positionRef.current.toFixed(3)));
     }
