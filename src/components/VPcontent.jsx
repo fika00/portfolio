@@ -13,19 +13,44 @@ import video1 from "/vids/video1.mp4";
 import video2 from "/vids/pol_site.mp4";
 import video3 from "/vids/halls.mp4";
 import Loader from "./Loader";
+import playicon from "/imgs/play.svg";
+import next from "/imgs/next.svg";
+import { Image } from "@react-three/drei";
 
 const VPcontent = (props) => {
-  const titles = ["My mind.", "Pages of Life.", "Between the walls."];
+  const titles = ["My mind.", "Pages of Life.", "Halls."];
   const text = [
     "My mind is a movie directed by my friend for which I've done this transition.",
     "Pages of Life tells a story about the importance of memories. For this movie I've done the special effects in the intro.",
     "A video I made for a music track of mine. I love mixing real and CGI elemnts to tell a story.",
+  ];
+  const links = [
+    "https://youtu.be/X1m5gAosXm4",
+    "https://youtu.be/6nyHdtMY9e0",
+    "https://youtu.be/tyneTw5aDio",
   ];
   const platforms = ["After Effects", "Premiere", "Blender", "FL Studio"];
   const play = useSelector((state) => state.position.play);
   const [start_play, setStart_play] = useState(false);
   const [current_index, setCurrentIndex] = useState(0);
   const videolist = [video1, video2, video3];
+  // useEffect(() => {
+  //   if (current_index == 0) {
+  //     document.getElementById("poi1").style.transform = "scale(3)";
+  //   } else {
+  //     document.getElementById("poi1").style.transform = "scale(1)";
+  //   }
+  //   if (current_index == 1) {
+  //     document.getElementById("poi2").style.transform = "scale(3)";
+  //   } else {
+  //     document.getElementById("poi2").style.transform = "scale(1)";
+  //   }
+  //   if (current_index == 2) {
+  //     document.getElementById("poi3").style.transform = "scale(3)";
+  //   } else {
+  //     document.getElementById("poi3").style.transform = "scale(1)";
+  //   }
+  // }, [current_index]);
   useEffect(() => {
     if (play == 2) {
       document.getElementById("contentwrapper2").style.opacity = 1;
@@ -93,9 +118,32 @@ const VPcontent = (props) => {
           </div>
         </div>
         <div className="videodetail">
-          <h1 className="vidtitle">{titles[current_index]}</h1>
-          <p>{text[current_index]}</p>
+          <div className="topside">
+            <a
+              className="anchorlink"
+              href={links[current_index]}
+              target="_blank"
+            >
+              <img src={playicon} alt="View on YouTube" />
+            </a>
+            <h1 className="vidtitle">{titles[current_index]}</h1>
+          </div>
+          <p className="videostory">{text[current_index]}</p>
+          <div className="toolsvp">
+            {platforms.map((tool) => (
+              <div className="platform">
+                <p className="platformtxt"> {tool}</p>
+              </div>
+            ))}
+          </div>
         </div>
+        {/* <div className="itemsvp">
+          <div className="point" id="poi1"></div>
+          <hr className="slash" />
+          <div className="point" id="poi2"></div>
+          <hr className="slash" />
+          <div className="point" id="poi3"></div>
+        </div> */}
       </div>
 
       <div className="contentcontainer">
@@ -119,10 +167,15 @@ const VPcontent = (props) => {
           </defs>
         </svg>
         <div className="arrows">
-          <div className="arrow left" onClick={handleGoBack}>
+          <div
+            className="arrow left"
+            onClick={() => {
+              props.onPressNav();
+              handleGoBack();
+            }}
+          >
             <h1
               style={{
-                fontSize: "15px",
                 width: "100%",
                 textAlign: "center",
               }}
@@ -130,10 +183,15 @@ const VPcontent = (props) => {
               {"<"}
             </h1>
           </div>
-          <div className="arrow right" onClick={handleGoNext}>
+          <div
+            className="arrow right"
+            onClick={() => {
+              props.onPressNav();
+              handleGoNext();
+            }}
+          >
             <h1
               style={{
-                fontSize: "15px",
                 width: "100%",
                 textAlign: "center",
               }}

@@ -35,10 +35,26 @@ const SDcontent = (props) => {
   const detailed = useRef(false);
 
   useEffect(() => {
+    if (currentIndex == 0) {
+      document.getElementById("po1").style.transform = "scale(3)";
+    } else {
+      document.getElementById("po1").style.transform = "scale(1)";
+    }
+    if (currentIndex == 1) {
+      document.getElementById("po2").style.transform = "scale(3)";
+    } else {
+      document.getElementById("po2").style.transform = "scale(1)";
+    }
+    if (currentIndex == 2) {
+      document.getElementById("po3").style.transform = "scale(3)";
+    } else {
+      document.getElementById("po3").style.transform = "scale(1)";
+    }
+  }, [currentIndex]);
+  useEffect(() => {
     if (isOn) {
-      document.getElementById("img").style.transform = "scale(1.2)";
-      document.getElementById("img").style.filter =
-        "drop-shadow(10px 25px 8px #0049525C)";
+      document.getElementById("img").style.transform = "scale(1.05)";
+
       const intv = setInterval(() => {
         displacediv.setAttribute("scale", `${Math.random() * 30}`);
       }, 2);
@@ -170,8 +186,15 @@ const SDcontent = (props) => {
   return (
     <div id="contentwrapper" className="contentwrapper">
       <div className="contentcontainer">
+        <div className="items">
+          <div className="point" id="po1"></div>
+          <hr className="slash" />
+          <div className="point" id="po2"></div>
+          <hr className="slash" />
+          <div className="point" id="po3"></div>
+        </div>
         <div className="title" id="title">
-          <AnimatedText text={titles[currentIndex]} delay={100} cl={7} />
+          <h1 className="title_text">{titles[currentIndex]}</h1>
         </div>
 
         <div
@@ -181,20 +204,10 @@ const SDcontent = (props) => {
             zIndex: 1000,
           }}
         >
-          <div id="paragraph" className="paratext">
-            <p>{paras[currentIndex]}</p>
-            <div className="tools">
-              {tools[currentIndex].map((tool) => (
-                <div className="lang">
-                  <p className="actualtext"> {tool}</p>
-                </div>
-              ))}
-            </div>
-          </div>
           <img
             onMouseEnter={() => setIsOn(true)}
             onMouseLeave={() => setIsOn(false)}
-            onClick={handleClick}
+            // onClick={handleClick}
             id="img"
             src={logos[currentIndex]}
             alt=""
@@ -203,6 +216,16 @@ const SDcontent = (props) => {
               zIndex: 15,
             }}
           />
+          <div id="paragraph" className="paratext">
+            <p className="paragraph_text">{paras[currentIndex]}</p>
+            <div className="tools">
+              {tools[currentIndex].map((tool) => (
+                <div className="lang">
+                  <h2 className="actualtext">{tool}</h2>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <svg xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
@@ -226,10 +249,15 @@ const SDcontent = (props) => {
         </svg>
 
         <div className="arrows">
-          <div className="arrow left" onClick={handleBack}>
+          <div
+            className="arrow left"
+            onClick={() => {
+              props.onPressNav();
+              handleBack();
+            }}
+          >
             <h1
               style={{
-                fontSize: "15px",
                 width: "100%",
                 textAlign: "center",
               }}
@@ -237,10 +265,15 @@ const SDcontent = (props) => {
               {"<"}
             </h1>
           </div>
-          <div className="arrow right" onClick={handleNext}>
+          <div
+            className="arrow right"
+            onClick={() => {
+              props.onPressNav();
+              handleNext();
+            }}
+          >
             <h1
               style={{
-                fontSize: "15px",
                 width: "100%",
                 textAlign: "center",
               }}

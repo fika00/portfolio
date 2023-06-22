@@ -7,6 +7,7 @@ import {
   Html,
   useVideoTexture,
   useTexture,
+  PositionalAudio,
 } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import "./App.css";
@@ -36,6 +37,8 @@ import AnimatedText from "./components/AnimatedText";
 import Navbar from "./components/navbar";
 import SDcontent from "./components/SDcontent";
 import VPcontent from "./components/VPcontent";
+import nav_sound from "/audio/nav_sound.mp3";
+import background_audio from "/audio/Gamela.mp3";
 
 function App() {
   const dispatch = useDispatch();
@@ -65,7 +68,7 @@ function App() {
   const diff = useRef(0);
   const detail_dir = useRef(0);
   const videoscale = useRef(0.1);
-  const particleRef = useRef();
+  const audioRef = useRef();
 
   const start_pos = [1.25, -0.02, 2.55];
   const start_rot = [0.015, 0.625, -0.0053];
@@ -97,6 +100,12 @@ function App() {
     }
   }, []);
 
+  const playSound = () => {
+    const audioPlayer = document.querySelector("#audioPlayer audio");
+    audioPlayer.src = nav_sound;
+    audioPlayer.play();
+  };
+
   const handleBack = (e) => {
     isScrollableRef.current = false;
     const pos = [0.85, -0.05, 0.79];
@@ -122,6 +131,7 @@ function App() {
     dispatch_it(1);
     detail_dir.current = 1;
   };
+
   const handleBackVP = (e) => {
     isScrollableRef.current = false;
     document.getElementById("contentwrap_all").style.opacity = 0;
@@ -161,6 +171,9 @@ function App() {
 
     dispatch_it(0);
     detail_dir.current = 0;
+    audioRef.current.play();
+
+    playSound();
   };
 
   let rate = 700;
@@ -334,24 +347,15 @@ function App() {
     // console.log("Position: ", camRef.current.position);
     // console.log("Rotation: ", camRef.current.rotation);
     const scrollb = document.getElementById("scrollbar");
-    if (currentPointRef.current != 0) {
+    if (currentPointRef.current != 0 && isScrollableRef.current) {
       scrollb.style.opacity = 1;
     } else {
       scrollb.style.opacity = 0;
     }
-
     animate();
     window.requestAnimationFrame(raf);
   }
-  // setTimeout(() => {
-  //   setIsLoaded(true);
-  //   console.log("SAD");
-  // }, 2000);
-  // useEffect(() => {
-  //   if (isLoaded) {
-  //     raf();
-  //   }
-  // }, [isLoaded]);
+
   setTimeout(() => {
     raf();
     document.getElementById("contentwrap_all").style.opacity = 1;
@@ -499,6 +503,13 @@ function App() {
           {/* <OrbitControls /> */}
         </Suspense>
         {/* <Stats /> */}
+        <group position={[0, 0, -5]}>
+          <PositionalAudio
+            ref={audioRef}
+            url={background_audio}
+            distance={0.7}
+          />
+        </group>
       </Canvas>
       {/* <Navbar /> */}
       <div id="scrollbar" className="scrollbar">
@@ -568,26 +579,23 @@ function App() {
           }}
           onClick={handleBackButton}
         >
-          Back
+          X
         </div>
-        <SDcontent />
+        <SDcontent onPressNav={playSound} />
       </div>
       <div id="detailedcontentVP" className="detailedcontent">
-        <div
-          id="backbtn"
-          style={{
-            position: "absolute",
-            left: 10,
-            top: 10,
-            zIndex: 1000,
-            opacity: 0,
-            transition: "1s",
-          }}
-          onClick={handleBackButton}
-        >
-          Back
-        </div>
-        <VPcontent />
+        <VPcontent onPressNav={playSound} />
+      </div>
+      <div
+        id="audioPlayer"
+        style={{
+          position: "absolute",
+          top: "0",
+          left: "0",
+          backgroundColor: "white",
+        }}
+      >
+        <audio id="audio" src="/audio/nav_sound.mp3"></audio>
       </div>
     </div>
   );
