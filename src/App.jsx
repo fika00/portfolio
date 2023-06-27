@@ -8,7 +8,7 @@ import {
   useVideoTexture,
   useTexture,
   PositionalAudio,
-  Loader
+  Loader,
 } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import "./App.css";
@@ -40,6 +40,7 @@ import SDcontent from "./components/SDcontent";
 import VPcontent from "./components/VPcontent";
 import nav_sound from "/audio/nav_sound.mp3";
 import background_audio from "/audio/Gamela.mp3";
+import LoadingScreen from "./components/LoadingScreen";
 
 function App() {
   const dispatch = useDispatch();
@@ -358,13 +359,12 @@ function App() {
   }
 
   const handleStartScroll = () => {
-
     setTimeout(() => {
       raf();
       document.getElementById("contentwrap_all").style.opacity = 1;
     }, 750);
-  }
-    
+  };
+
   // const bgcolor = "rgb(97, 75, 92)";
   const bgcolor = 0x343873;
   function VideoMaterial({ url }) {
@@ -505,17 +505,17 @@ function App() {
             <Vignette darkness={0.3} />
           </EffectComposer>
           {/* <OrbitControls /> */}
+          <group position={[0, 0, -5]}>
+            <PositionalAudio
+              ref={audioRef}
+              url={background_audio}
+              distance={0.7}
+            />
+          </group>
         </Suspense>
         {/* <Stats /> */}
-        <group position={[0, 0, -5]}>
-          <PositionalAudio
-            ref={audioRef}
-            url={background_audio}
-            distance={0.7}
-          />
-        </group>
       </Canvas>
-      <Loader />
+      <LoadingScreen />
       {/* <Navbar /> */}
       <div id="scrollbar" className="scrollbar">
         <Scrollbar />
@@ -528,7 +528,11 @@ function App() {
           overflow: "hidden",
         }}
       >
-        <TextEffect input_text="FILIP" delay={150} startScroll={handleStartScroll}/>
+        <TextEffect
+          input_text="FILIP"
+          delay={150}
+          startScroll={handleStartScroll}
+        />
       </div>
       <div className="wrappercontent" id="contentwrap_all">
         <div id="content1" className="containerContent">
