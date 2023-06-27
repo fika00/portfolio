@@ -515,7 +515,7 @@ function App() {
         </Suspense>
         {/* <Stats /> */}
       </Canvas>
-      <LoadingScreen />
+      <Loader />
       {/* <Navbar /> */}
       <div id="scrollbar" className="scrollbar">
         <Scrollbar />
