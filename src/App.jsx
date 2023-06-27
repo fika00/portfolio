@@ -8,6 +8,7 @@ import {
   useVideoTexture,
   useTexture,
   PositionalAudio,
+  Loader
 } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import "./App.css";
@@ -356,11 +357,14 @@ function App() {
     window.requestAnimationFrame(raf);
   }
 
-  setTimeout(() => {
-    raf();
-    document.getElementById("contentwrap_all").style.opacity = 1;
-  }, 2000);
+  const handleStartScroll = () => {
 
+    setTimeout(() => {
+      raf();
+      document.getElementById("contentwrap_all").style.opacity = 1;
+    }, 750);
+  }
+    
   // const bgcolor = "rgb(97, 75, 92)";
   const bgcolor = 0x343873;
   function VideoMaterial({ url }) {
@@ -497,7 +501,7 @@ function App() {
               height={250}
             />
             <ChromaticAberration offset={[0.001, 0]} />
-            <ToneMapping middleGrey={0.4} />
+            <ToneMapping middleGrey={0.6} />
             <Vignette darkness={0.3} />
           </EffectComposer>
           {/* <OrbitControls /> */}
@@ -511,6 +515,7 @@ function App() {
           />
         </group>
       </Canvas>
+      <Loader />
       {/* <Navbar /> */}
       <div id="scrollbar" className="scrollbar">
         <Scrollbar />
@@ -523,7 +528,7 @@ function App() {
           overflow: "hidden",
         }}
       >
-        <TextEffect input_text="FILIP" delay={150} />
+        <TextEffect input_text="FILIP" delay={150} startScroll={handleStartScroll}/>
       </div>
       <div className="wrappercontent" id="contentwrap_all">
         <div id="content1" className="containerContent">

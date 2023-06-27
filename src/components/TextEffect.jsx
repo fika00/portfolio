@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
-const TextEffect = ({ input_text, delay }) => {
+const TextEffect = (props) => {
   const [text, setText] = useState("");
   const [displayText, setDisplayText] = useState("");
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  let delay = props.delay
 
   useEffect(() => {
-    const typedText = input_text; // Replace with your desired text
+    const typedText = props.input_text; // Replace with your desired text
     const characters = "▏▎▍▌";
     let currentIndex = 0;
 
@@ -53,6 +54,12 @@ const TextEffect = ({ input_text, delay }) => {
       setIsLoading(false); // Set isLoading to false after the specified duration
     }, 1000); // Adjust the duration (in milliseconds) for the Matrix effect
   }, []);
+
+  useEffect(() => {
+    if (isTypingComplete) {
+      props.startScroll()
+    }
+  },[isTypingComplete])
 
   return (
     <div>
