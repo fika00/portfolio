@@ -8,6 +8,7 @@ import {
   useVideoTexture,
   useTexture,
   PositionalAudio,
+  Loader,
 } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import "./App.css";
@@ -39,6 +40,7 @@ import SDcontent from "./components/SDcontent";
 import VPcontent from "./components/VPcontent";
 import nav_sound from "/audio/nav_sound.mp3";
 import background_audio from "/audio/Gamela.mp3";
+import LoadingScreen from "./components/LoadingScreen";
 
 function App() {
   const dispatch = useDispatch();
@@ -356,10 +358,12 @@ function App() {
     window.requestAnimationFrame(raf);
   }
 
-  setTimeout(() => {
-    raf();
-    document.getElementById("contentwrap_all").style.opacity = 1;
-  }, 2000);
+  const handleStartScroll = () => {
+    setTimeout(() => {
+      raf();
+      document.getElementById("contentwrap_all").style.opacity = 1;
+    }, 750);
+  };
 
   // const bgcolor = "rgb(97, 75, 92)";
   const bgcolor = 0x343873;
@@ -484,25 +488,24 @@ function App() {
               <VideoMaterial url={"vids/video1.mp4"} />
             </mesh>
           </group> */}
-          <EffectComposer>
-            <Noise
-              premultiply
-              blendFunction={BlendFunction.MULTIPLY}
-              opacity={0.75}
-            />
-            <Bloom
-              intensity={0.65}
-              luminanceThreshold={0.2}
-              luminanceSmoothing={0.45}
-              height={250}
-            />
-            <ChromaticAberration offset={[0.001, 0]} />
-            <ToneMapping middleGrey={0.4} />
-            <Vignette darkness={0.3} />
-          </EffectComposer>
-          {/* <OrbitControls /> */}
         </Suspense>
-        {/* <Stats /> */}
+        <EffectComposer>
+          <Noise
+            premultiply
+            blendFunction={BlendFunction.MULTIPLY}
+            opacity={0.75}
+          />
+          <Bloom
+            intensity={0.65}
+            luminanceThreshold={0.2}
+            luminanceSmoothing={0.45}
+            height={250}
+          />
+          <ChromaticAberration offset={[0.001, 0]} />
+          <ToneMapping middleGrey={0.6} />
+          <Vignette darkness={0.3} />
+        </EffectComposer>
+        {/* <OrbitControls /> */}
         <group position={[0, 0, -5]}>
           <PositionalAudio
             ref={audioRef}
@@ -510,8 +513,10 @@ function App() {
             distance={0.7}
           />
         </group>
+        {/* <Stats /> */}
       </Canvas>
-      {/* <Navbar /> */}
+      {/* <Loader /> */}
+      <LoadingScreen />
       <div id="scrollbar" className="scrollbar">
         <Scrollbar />
       </div>
@@ -523,12 +528,16 @@ function App() {
           overflow: "hidden",
         }}
       >
-        <TextEffect input_text="FILIP" delay={150} />
+        <TextEffect
+          input_text="FILIP"
+          delay={150}
+          startScroll={handleStartScroll}
+        />
       </div>
       <div className="wrappercontent" id="contentwrap_all">
         <div id="content1" className="containerContent">
           <div className="column">
-            <p className="para right">
+            <div className="para right">
               <RandomTextAnimation
                 text={`I would currently consider myself an experienced junior programmer.
               Through collage and self interest I have aquired a nice vocabulary
@@ -536,7 +545,7 @@ function App() {
                 delay={3}
                 cl={1}
               />
-            </p>
+            </div>
 
             <hr id="sliceright" className="slice right" />
             <div
@@ -552,13 +561,13 @@ function App() {
 
         <div id="content2" className="containerContent2">
           <div className="column">
-            <p className="para">
+            <div className="para">
               <RandomTextAnimation
                 text={`I've been producing video and photo since I was a kid. Mostly implementing the knowladge into webdesign, but I do some projects on the side.`}
                 delay={3}
                 cl={2}
               />
-            </p>
+            </div>
             <hr id="sliceleft" className="slice left" />
             <div onClick={handleBackVP}>
               <AnimatedText text={"Video Production"} cl={2} />

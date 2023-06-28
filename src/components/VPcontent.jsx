@@ -131,7 +131,7 @@ const VPcontent = (props) => {
           <p className="videostory">{text[current_index]}</p>
           <div className="toolsvp">
             {platforms.map((tool) => (
-              <div className="platform">
+              <div className="platform" key={tool}>
                 <p className="platformtxt"> {tool}</p>
               </div>
             ))}
