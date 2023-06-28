@@ -488,35 +488,35 @@ function App() {
               <VideoMaterial url={"vids/video1.mp4"} />
             </mesh>
           </group> */}
-          <EffectComposer>
-            <Noise
-              premultiply
-              blendFunction={BlendFunction.MULTIPLY}
-              opacity={0.75}
-            />
-            <Bloom
-              intensity={0.65}
-              luminanceThreshold={0.2}
-              luminanceSmoothing={0.45}
-              height={250}
-            />
-            <ChromaticAberration offset={[0.001, 0]} />
-            <ToneMapping middleGrey={0.6} />
-            <Vignette darkness={0.3} />
-          </EffectComposer>
-          {/* <OrbitControls /> */}
-          <group position={[0, 0, -5]}>
-            <PositionalAudio
-              ref={audioRef}
-              url={background_audio}
-              distance={0.7}
-            />
-          </group>
         </Suspense>
+        <EffectComposer>
+          <Noise
+            premultiply
+            blendFunction={BlendFunction.MULTIPLY}
+            opacity={0.75}
+          />
+          <Bloom
+            intensity={0.65}
+            luminanceThreshold={0.2}
+            luminanceSmoothing={0.45}
+            height={250}
+          />
+          <ChromaticAberration offset={[0.001, 0]} />
+          <ToneMapping middleGrey={0.6} />
+          <Vignette darkness={0.3} />
+        </EffectComposer>
+        {/* <OrbitControls /> */}
+        <group position={[0, 0, -5]}>
+          <PositionalAudio
+            ref={audioRef}
+            url={background_audio}
+            distance={0.7}
+          />
+        </group>
         {/* <Stats /> */}
       </Canvas>
-      <Loader />
-      {/* <Navbar /> */}
+      {/* <Loader /> */}
+      <LoadingScreen />
       <div id="scrollbar" className="scrollbar">
         <Scrollbar />
       </div>
@@ -537,7 +537,7 @@ function App() {
       <div className="wrappercontent" id="contentwrap_all">
         <div id="content1" className="containerContent">
           <div className="column">
-            <p className="para right">
+            <div className="para right">
               <RandomTextAnimation
                 text={`I would currently consider myself an experienced junior programmer.
               Through collage and self interest I have aquired a nice vocabulary
@@ -545,7 +545,7 @@ function App() {
                 delay={3}
                 cl={1}
               />
-            </p>
+            </div>
 
             <hr id="sliceright" className="slice right" />
             <div
@@ -561,13 +561,13 @@ function App() {
 
         <div id="content2" className="containerContent2">
           <div className="column">
-            <p className="para">
+            <div className="para">
               <RandomTextAnimation
                 text={`I've been producing video and photo since I was a kid. Mostly implementing the knowladge into webdesign, but I do some projects on the side.`}
                 delay={3}
                 cl={2}
               />
-            </p>
+            </div>
             <hr id="sliceleft" className="slice left" />
             <div onClick={handleBackVP}>
               <AnimatedText text={"Video Production"} cl={2} />

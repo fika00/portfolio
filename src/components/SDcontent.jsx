@@ -220,7 +220,7 @@ const SDcontent = (props) => {
             <p className="paragraph_text">{paras[currentIndex]}</p>
             <div className="tools">
               {tools[currentIndex].map((tool) => (
-                <div className="lang">
+                <div className="lang" key={`${tool}lang`}>
                   <h2 className="actualtext">{tool}</h2>
                 </div>
               ))}
