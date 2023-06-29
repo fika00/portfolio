@@ -41,6 +41,7 @@ import VPcontent from "./components/VPcontent";
 import nav_sound from "/audio/nav_sound.mp3";
 import background_audio from "/audio/Gamela.mp3";
 import LoadingScreen from "./components/LoadingScreen";
+import ScrollHint from "./components/ScrollHint";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,6 +72,7 @@ function App() {
   const detail_dir = useRef(0);
   const videoscale = useRef(0.1);
   const audioRef = useRef();
+  const didScroll = useRef(false);
 
   const start_pos = [1.25, -0.02, 2.55];
   const start_rot = [0.015, 0.625, -0.0053];
@@ -346,6 +348,9 @@ function App() {
 
     icoRef.current.position.y = -positionRef.current * 10;
 
+    if (currentPointRef.current != 0) {
+      document.getElementById("scrollhintelement").style.display = "none";
+    }
     // console.log("Position: ", camRef.current.position);
     // console.log("Rotation: ", camRef.current.rotation);
     const scrollb = document.getElementById("scrollbar");
@@ -367,10 +372,7 @@ function App() {
 
   // const bgcolor = "rgb(97, 75, 92)";
   const bgcolor = 0x343873;
-  function VideoMaterial({ url }) {
-    const texture = useVideoTexture(url);
-    return <meshBasicMaterial map={texture} />;
-  }
+
   return (
     <div
       style={{
@@ -605,6 +607,9 @@ function App() {
         }}
       >
         <audio id="audio" src="/audio/nav_sound.mp3"></audio>
+      </div>
+      <div id="scrollhintelement" className="scrollhintcontainer">
+        <ScrollHint />
       </div>
     </div>
   );

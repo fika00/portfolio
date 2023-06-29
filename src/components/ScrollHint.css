@@ -1,0 +1,29 @@
+@keyframes scrollhintanim {
+  1% {
+    bottom: 5%;
+  }
+  4% {
+    opacity: 1;
+  }
+  8% {
+    bottom: 95%;
+  }
+  12% {
+    opacity: 0;
+  }
+}
+.scrollhintwrap {
+  height: 100%;
+  width: 100%;
+}
+.pointscroll {
+  border-radius: 50px;
+  opacity: 0;
+  aspect-ratio: 1;
+  position: absolute;
+  bottom: 5%;
+  width: 5px;
+  background-color: rgba(255, 255, 255, 0.521);
+  animation: scrollhintanim 8s infinite ease-in-out;
+  animation-delay: 4s;
+}

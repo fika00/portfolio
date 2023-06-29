@@ -25,6 +25,14 @@
   font-family: "Ysabeau", sans-serif;
   overflow: hidden;
 }
+.scrollhintcontainer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 5px;
+  width: 20px;
+  height: 150px;
+}
 .para {
   padding: 0;
   font-family: "Playfair", serif;
@@ -209,11 +217,8 @@
     display: none;
   }
 }
-@media screen 
-  and (min-device-width: 1200px) 
-  and (max-device-width: 1600px) 
-  and (-webkit-min-device-pixel-ratio: 1) { 
-    .para {
-      font-size: 2rem;
-    }
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1) {
+  .para {
+    font-size: 2rem;
+  }
 }

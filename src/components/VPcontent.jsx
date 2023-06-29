@@ -12,28 +12,32 @@ import loading from "/loading.svg";
 import video1 from "/vids/video1.mp4";
 import video2 from "/vids/pol_site.mp4";
 import video3 from "/vids/halls.mp4";
+import video4 from "/vids/video4.mp4";
+
 import Loader from "./Loader";
 import playicon from "/imgs/play.svg";
 import next from "/imgs/next.svg";
 import { Image } from "@react-three/drei";
 
 const VPcontent = (props) => {
-  const titles = ["My mind.", "Pages of Life.", "Halls."];
+  const titles = ["My mind.", "Pages of Life.", "Halls.", "Society."];
   const text = [
     "My mind is a movie directed by my friend for which I've done this transition.",
     "Pages of Life tells a story about the importance of memories. For this movie I've done the special effects in the intro.",
     "A video I made for a music track of mine. I love mixing real and CGI elemnts to tell a story.",
+    "I've done a few video projects for uni. Here's an example of one that I really liked doing.",
   ];
   const links = [
     "https://youtu.be/X1m5gAosXm4",
     "https://youtu.be/6nyHdtMY9e0",
     "https://youtu.be/tyneTw5aDio",
+    "#",
   ];
   const platforms = ["After Effects", "Premiere", "Blender", "FL Studio"];
   const play = useSelector((state) => state.position.play);
   const [start_play, setStart_play] = useState(false);
   const [current_index, setCurrentIndex] = useState(0);
-  const videolist = [video1, video2, video3];
+  const videolist = [video1, video2, video3, video4];
   // useEffect(() => {
   //   if (current_index == 0) {
   //     document.getElementById("poi1").style.transform = "scale(3)";
@@ -96,6 +100,17 @@ const VPcontent = (props) => {
     darkenDiv.style.backgroundColor = "#00000000";
     loader.style.opacity = 0;
   };
+  useEffect(() => {
+    const link = document.getElementById("linkel");
+    if (current_index == 3) {
+      link.target = "_self";
+      link.style.opacity = 0;
+    } else {
+      link.target = "_blank";
+
+      link.style.opacity = 1;
+    }
+  }, [current_index]);
   return (
     <div id="contentwrapper2" className="contentwrapper2">
       <div className="videotextwrap">
@@ -120,6 +135,7 @@ const VPcontent = (props) => {
         <div className="videodetail">
           <div className="topside">
             <a
+              id="linkel"
               className="anchorlink"
               href={links[current_index]}
               target="_blank"
