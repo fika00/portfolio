@@ -22,8 +22,10 @@ import {
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { useControls } from "leva";
 import { useSelector } from "react-redux";
+import { forwardRef, useImperativeHandle } from "react";
+import { degToRad, radToDeg } from "three/src/math/MathUtils";
 
-const Experience = (props) => {
+const Experience = (props, ref) => {
   const group = useRef();
   const pupilRef = useRef();
   const camRef = useRef();
@@ -37,7 +39,73 @@ const Experience = (props) => {
 
   nodes.eye.morphTargetInfluences[0] = 0.5;
   const materialRef = useRef();
-  const timeRef = useRef(0);
+  const uTime = useRef(0);
+  const ready = useRef(false);
+
+  useImperativeHandle(ref, () => ({
+    triggerUVEffect,
+    stopUVEffect,
+    rotate90,
+  }));
+
+  const triggerUVEffect = () => {
+    gsap.to(uTime, {
+      current: 0.5,
+      duration: 1, // Duration of the animation in seconds
+      ease: "Power1.easeInOut",
+    });
+  };
+  const stopUVEffect = () => {
+    const uTimeVal = pupilRef.current.material.userData.shader.uniforms.uTime;
+    const scaler =
+      Math.ceil(uTimeVal.value / (degToRad(360) * 10)) * degToRad(360) * 10;
+
+    const endPoint = uTimeVal.value + (scaler - uTimeVal.value);
+
+    console.log(
+      "Current: ",
+      uTimeVal.value,
+      "endPoint: ",
+      endPoint,
+      "scaler: ",
+      scaler
+    );
+
+    uTime.current = 0;
+    gsap.to(uTimeVal, {
+      value: endPoint,
+      duration: 1.5, // Duration of the animation in seconds
+      ease: "Power1.easeOut",
+    });
+  };
+
+  const rotate90 = () => {
+    const uTimeVal = pupilRef.current.material.userData.shader.uniforms.uTime;
+
+    console.log("360 to rad: ", (degToRad(360) * 10) / uTimeVal.value);
+    console.log(uTimeVal);
+    gsap.to(uTimeVal, {
+      value: degToRad(360) * 10,
+      duration: 1, // Duration of the animation in seconds
+      ease: "Power1.easeInOut",
+    });
+  };
+  useFrame(() => {
+    if (ready.current) {
+      try {
+        pupilRef.current.material.userData.shader.uniforms.uTime.value +=
+          uTime.current;
+      } catch (error) {
+        console.log(error);
+      }
+
+      // console.log(
+      //   radToDeg(
+      //     pupilRef.current.material.userData.shader.uniforms.uTime.value
+      //   ) / 10
+      // );
+    }
+  });
 
   useEffect(() => {
     if (startup.current) {
@@ -203,7 +271,7 @@ const Experience = (props) => {
 
 			reflectVec = inverseTransformDirection( reflectVec, viewMatrix );
 
-      reflectVec = rotate(reflectVec, vec3(0.0, 1.0, 0.0), uTime * 0.1);
+      reflectVec = rotate(reflectVec, vec3(1.0, 0.0, 0.0), uTime * 0.1);
 			vec4 envMapColor = textureCubeUV( envMap, reflectVec, roughness );
 
 			return envMapColor.rgb * envMapIntensity;
@@ -244,16 +312,12 @@ const Experience = (props) => {
       );
 
       movingMaterial.userData.shader = shader;
-      console.log(movingMaterial.userData.shader.fragmentShader);
     },
   });
-
   useEffect(() => {
     setTimeout(() => {
       // console.log(movingMaterial.userData.shader);
-      setInterval(() => {
-        pupilRef.current.material.userData.shader.uniforms.uTime.value += 0.2;
-      }, 1);
+      ready.current = true;
       console.log(pupilRef.current.material.userData.shader.uniforms.uTime);
     }, 1200);
   }, []);
@@ -302,5 +366,5 @@ const Experience = (props) => {
   );
 };
 
-export default Experience;
+export default forwardRef(Experience);
 useGLTF.preload("./models/eye3.glb");

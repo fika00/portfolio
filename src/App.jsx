@@ -73,6 +73,9 @@ function App() {
   const videoscale = useRef(0.1);
   const audioRef = useRef();
   const didScroll = useRef(false);
+  const EyeRef = useRef();
+  const bloomRef = useRef();
+  const middleGrey = useRef(0.6);
 
   const start_pos = [1.25, -0.02, 2.55];
   const start_rot = [0.015, 0.625, -0.0053];
@@ -109,7 +112,48 @@ function App() {
     audioPlayer.src = nav_sound;
     audioPlayer.play();
   };
+  const handlePostEffects = () => {
+    gsap.to(bloomRef.current, {
+      luminanceThreshold: 0.01,
+      luminanceSmoothing: 0.2,
+      intensity: 1.7,
 
+      duration: 1, // Duration of the animation in seconds
+      ease: "Power1.easeInOut",
+    });
+    gsap.to(middleGrey.current, {
+      middleGrey: 0.5,
+
+      duration: 1, // Duration of the animation in seconds
+      ease: "Power1.easeInOut",
+    });
+
+    // bloomRef.current.luminanceThreshold = 0.9;
+    setTimeout(() => {
+      console.log(bloomRef.current, middleGrey.current);
+    }, 1200);
+  };
+  const handlePostEffectsDefault = () => {
+    gsap.to(bloomRef.current, {
+      luminanceThreshold: 0.2,
+      luminanceSmoothing: 0.45,
+      intensity: 0.65,
+
+      duration: 1, // Duration of the animation in seconds
+      ease: "Power1.easeInOut",
+    });
+    gsap.to(middleGrey.current, {
+      middleGrey: 0.65,
+
+      duration: 1, // Duration of the animation in seconds
+      ease: "Power1.easeInOut",
+    });
+
+    // bloomRef.current.luminanceThreshold = 0.9;
+    setTimeout(() => {
+      console.log(bloomRef.current, middleGrey.current);
+    }, 1200);
+  };
   const handleBack = (e) => {
     isScrollableRef.current = false;
     const pos = [0.85, -0.05, 0.79];
@@ -403,7 +447,7 @@ function App() {
         />
         <color attach="background" args={[bgcolor]} />
         <Suspense fallback={null}>
-          <Experience bgcolor={bgcolor} position={[0, 0, 0]} />
+          <Experience ref={EyeRef} bgcolor={bgcolor} position={[0, 0, 0]} />
           <group ref={icoRef}>
             <Ico
               rotation={randomRotation()}
@@ -498,13 +542,14 @@ function App() {
             opacity={0.75}
           />
           <Bloom
+            ref={bloomRef}
             intensity={0.65}
             luminanceThreshold={0.2}
             luminanceSmoothing={0.45}
             height={250}
           />
           <ChromaticAberration offset={[0.001, 0]} />
-          <ToneMapping middleGrey={0.6} />
+          <ToneMapping ref={middleGrey} middleGrey={1} />
           <Vignette darkness={0.3} />
         </EffectComposer>
         {/* <OrbitControls /> */}
@@ -611,6 +656,50 @@ function App() {
       <div id="scrollhintelement" className="scrollhintcontainer">
         <ScrollHint />
       </div>
+      <button
+        style={{
+          position: "absolute",
+          right: 0,
+          top: 0,
+          zIndex: 9999999999,
+        }}
+        onClick={() => {
+          EyeRef.current.triggerUVEffect();
+          handlePostEffects();
+          console.log("Done");
+        }}
+      >
+        Test
+      </button>
+      <button
+        style={{
+          position: "absolute",
+          right: 0,
+          top: "10%",
+          zIndex: 9999999999,
+        }}
+        onClick={() => {
+          EyeRef.current.stopUVEffect();
+          handlePostEffectsDefault();
+          console.log("Done");
+        }}
+      >
+        Stop
+      </button>
+      <button
+        style={{
+          position: "absolute",
+          right: 0,
+          top: "20%",
+          zIndex: 9999999999,
+        }}
+        onClick={() => {
+          EyeRef.current.rotate90();
+          console.log("Done");
+        }}
+      >
+        90
+      </button>
     </div>
   );
 }
