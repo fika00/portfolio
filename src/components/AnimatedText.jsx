@@ -68,8 +68,6 @@ const AnimatedText = ({ text, cl }) => {
     animateText();
   }, [text, start]);
   useEffect(() => {
-    console.log(cl);
-
     if (cl == 1) {
       if (isDone) {
         document.getElementById(`slice-${cl}`).style.opacity = 1;

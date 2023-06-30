@@ -76,6 +76,7 @@ function App() {
   const EyeRef = useRef();
   const bloomRef = useRef();
   const middleGrey = useRef(0.6);
+  const ready = useRef(false);
 
   const start_pos = [1.25, -0.02, 2.55];
   const start_rot = [0.015, 0.625, -0.0053];
@@ -411,11 +412,25 @@ function App() {
     setTimeout(() => {
       raf();
       document.getElementById("contentwrap_all").style.opacity = 1;
+      ready.current = true;
     }, 750);
   };
 
   // const bgcolor = "rgb(97, 75, 92)";
   const bgcolor = 0x343873;
+
+  useEffect(() => {
+    if (ready.current) {
+      console.log(currentPointRef.current);
+      if (currentPointRef.current != 0) {
+        EyeRef.current.triggerUVEffect();
+        handlePostEffects();
+      } else {
+        EyeRef.current.stopUVEffect();
+        handlePostEffectsDefault();
+      }
+    }
+  }, [currentPointRef.current]);
 
   return (
     <div
