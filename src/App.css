@@ -10,7 +10,22 @@
   padding: 0;
   text-align: center;
 }
-
+.audiocontroller {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  cursor: pointer;
+  z-index: 99999;
+}
+.audiomutedslash {
+  position: absolute;
+  height: 3px;
+  border: 0;
+  background-color: white;
+  width: 0%;
+  top: 15%;
+  transition: width 0.8s ease-in-out;
+}
 .text {
   position: absolute;
   color: #d9d5d5;

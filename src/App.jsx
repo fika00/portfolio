@@ -9,6 +9,7 @@ import {
   useTexture,
   PositionalAudio,
   Loader,
+  Sparkles,
 } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import "./App.css";
@@ -39,6 +40,7 @@ import Navbar from "./components/navbar";
 import SDcontent from "./components/SDcontent";
 import VPcontent from "./components/VPcontent";
 import nav_sound from "/audio/nav_sound.mp3";
+import soundIcon from "/imgs/sound.png";
 import background_audio from "/audio/Gamela.mp3";
 import LoadingScreen from "./components/LoadingScreen";
 import ScrollHint from "./components/ScrollHint";
@@ -77,6 +79,8 @@ function App() {
   const bloomRef = useRef();
   const middleGrey = useRef(0.6);
   const chromAb = useRef();
+  const isScrolling = useRef(false);
+  const isPlayingBGAudio = useRef(false);
 
   const ready = useRef(false);
   const isRotating = useRef(false);
@@ -100,6 +104,7 @@ function App() {
   let lastTouchY = 0; // Declare lastTouchY outside the event listener
   let pos_last = 0;
   let point_last = 0;
+  let currentScrollPoint = 0;
 
   // To detailed
 
@@ -115,6 +120,18 @@ function App() {
     const audioPlayer = document.querySelector("#audioPlayer audio");
     audioPlayer.src = nav_sound;
     audioPlayer.play();
+  };
+  const playBGAudio = () => {
+    const slash = document.getElementById("audiomutedslash");
+    if (!isPlayingBGAudio.current) {
+      audioRef.current.play();
+      isPlayingBGAudio.current = true;
+      slash.style.width = "0%";
+    } else {
+      audioRef.current.stop();
+      isPlayingBGAudio.current = false;
+      slash.style.width = "100%";
+    }
   };
   const handlePostEffects = () => {
     gsap.to(bloomRef.current, {
@@ -176,14 +193,14 @@ function App() {
       x: pos[0],
       y: pos[1],
       z: pos[2],
-      duration: 1.5, // Duration of the animation in seconds
+      duration: 2, // Duration of the animation in seconds
     });
 
     gsap.to(camRef.current.rotation, {
       x: rot[0],
       y: rot[1],
       z: rot[2],
-      duration: 1.5, // Duration of the animation in seconds
+      duration: 2, // Duration of the animation in seconds
     });
     dispatch_it(1);
     detail_dir.current = 1;
@@ -202,14 +219,14 @@ function App() {
       x: pos[0],
       y: pos[1],
       z: pos[2],
-      duration: 1.5, // Duration of the animation in seconds
+      duration: 2, // Duration of the animation in seconds
     });
 
     gsap.to(camRef.current.rotation, {
       x: rot[0],
       y: rot[1],
       z: rot[2],
-      duration: 1.5, // Duration of the animation in seconds
+      duration: 2, // Duration of the animation in seconds
     });
     dispatch_it(2);
     detail_dir.current = 2;
@@ -228,7 +245,6 @@ function App() {
 
     dispatch_it(0);
     detail_dir.current = 0;
-    audioRef.current.play();
 
     playSound();
   };
@@ -263,18 +279,15 @@ function App() {
     // }
 
     if (isScrollableRef.current) {
-      if (
-        positionRef.current <= -0.35 &&
-        positionRef.current >= -1.45 &&
-        currentPointRef.current != 1
-      ) {
+      if (currentScrollPoint == -1 && currentPointRef.current != 1) {
         cont1.style.zIndex = 10;
         cont1.style.opacity = 1;
         cont2.style.zIndex = 0;
         cont2.style.opacity = 0;
 
-        // EyeRef.current.triggerUVEffect();
-        // handlePostEffects();
+        EyeRef.current.triggerUVEffect();
+        handlePostEffects();
+
         console.log("PRVI");
         currentPointRef.current = 1;
         sliceright.style.opacity = 1;
@@ -285,6 +298,7 @@ function App() {
           y: point1_pos[1],
           z: point1_pos[2],
           duration: 2, // Duration of the animation in seconds
+          ease: "Power2.easeInOut",
         });
 
         gsap.to(camRef.current.rotation, {
@@ -292,12 +306,9 @@ function App() {
           y: point1_rot[1],
           z: point1_rot[2],
           duration: 2, // Duration of the animation in seconds
+          ease: "Power2.easeInOut",
         });
-      } else if (
-        positionRef.current >= -0.55 &&
-        positionRef.current <= 0 &&
-        currentPointRef.current != 0
-      ) {
+      } else if (currentScrollPoint == 0 && currentPointRef.current != 0) {
         cont2.style.zIndex = 0;
         cont1.style.zIndex = 0;
         cont2.style.opacity = 0;
@@ -308,8 +319,8 @@ function App() {
         sliceleft.style.opacity = 0;
         console.log("NULTI");
 
-        // EyeRef.current.stopUVEffect();
-        // handlePostEffectsDefault();
+        EyeRef.current.stopUVEffect();
+        handlePostEffectsDefault();
 
         // Use GSAP to animate the camera's position and rotation
         gsap.to(camRef.current.position, {
@@ -317,6 +328,7 @@ function App() {
           y: start_pos[1],
           z: start_pos[2],
           duration: 2, // Duration of the animation in seconds
+          ease: "Power1.easeInOut",
         });
 
         gsap.to(camRef.current.rotation, {
@@ -324,12 +336,9 @@ function App() {
           y: start_rot[1],
           z: start_rot[2],
           duration: 2, // Duration of the animation in seconds
+          ease: "Power2.easeInOut",
         });
-      } else if (
-        positionRef.current <= -1.55 &&
-        positionRef.current >= -2.25 &&
-        currentPointRef.current != 2
-      ) {
+      } else if (currentScrollPoint == -2 && currentPointRef.current != 2) {
         cont2.style.zIndex = 10;
         cont1.style.zIndex = 0;
         cont2.style.opacity = 1;
@@ -347,6 +356,7 @@ function App() {
           y: point2_pos[1],
           z: point2_pos[2],
           duration: 2, // Duration of the animation in seconds
+          ease: "Power2.easeInOut",
         });
 
         gsap.to(camRef.current.rotation, {
@@ -354,6 +364,7 @@ function App() {
           y: point2_rot[1],
           z: point2_rot[2],
           duration: 2, // Duration of the animation in seconds
+          ease: "Power2.easeInOut",
         });
       }
     }
@@ -374,7 +385,7 @@ function App() {
       if (lastTouchY !== null) {
         const touch = e.touches[0];
         const deltaY = touch.pageY - lastTouchY;
-        speedRef.current -= deltaY * 0.0007;
+        speedRef.current -= deltaY * 0.001;
         lastTouchY = touch.pageY;
       }
     });
@@ -386,27 +397,41 @@ function App() {
   }
   function raf() {
     if (isScrollableRef.current) {
-      positionRef.current -= speedRef.current;
       speedRef.current *= 0.8;
+      if (
+        speedRef.current > 0.08 &&
+        !isScrolling.current &&
+        currentScrollPoint > -2
+      ) {
+        isScrolling.current = true;
+        speedRef.current = 0;
+        currentScrollPoint -= 1;
+        gsap.to(positionRef, {
+          current: currentScrollPoint,
 
-      if (positionRef.current > 0) {
-        roundedRef.current = 0;
-        diff.current = roundedRef.current - positionRef.current;
-        positionRef.current += diff.current * 0.1;
-      } else {
-        roundedRef.current = Math.round(positionRef.current);
-        diff.current = roundedRef.current - positionRef.current;
-        positionRef.current += diff.current * 0.03;
-      }
+          duration: 2, // Duration of the animation in seconds
+          ease: "Power2.easeInOut",
+        });
+        setTimeout(() => {
+          isScrolling.current = false;
+        }, 1000);
+      } else if (
+        speedRef.current < -0.08 &&
+        !isScrolling.current &&
+        currentScrollPoint < 0
+      ) {
+        isScrolling.current = true;
+        currentScrollPoint += 1;
+        speedRef.current = 0;
 
-      if (positionRef.current < -3) {
-        roundedRef.current = -3;
-        diff.current = roundedRef.current - positionRef.current;
-        positionRef.current += diff.current * 0.1;
-      } else {
-        roundedRef.current = Math.round(positionRef.current);
-        diff.current = roundedRef.current - positionRef.current;
-        positionRef.current += diff.current * 0.03;
+        gsap.to(positionRef, {
+          current: currentScrollPoint,
+          duration: 2, // Duration of the animation in seconds
+          ease: "Power2.easeInOut",
+        });
+        setTimeout(() => {
+          isScrolling.current = false;
+        }, 1000);
       }
     }
 
@@ -549,6 +574,21 @@ function App() {
                 envMap
               />
             </mesh> */}
+            <Sparkles count={100} noise={1} scale={5} speed={0.3} />
+            <Sparkles
+              position={[0, -10, 0]}
+              count={100}
+              noise={1}
+              scale={5}
+              speed={0.3}
+            />
+            <Sparkles
+              position={[0, -20, 0]}
+              count={100}
+              noise={1}
+              scale={5}
+              speed={0.3}
+            />
           </group>
 
           {/* <group>
@@ -562,6 +602,7 @@ function App() {
             </mesh>
           </group> */}
         </Suspense>
+
         <EffectComposer>
           <Noise
             premultiply
@@ -683,7 +724,7 @@ function App() {
       <div id="scrollhintelement" className="scrollhintcontainer">
         <ScrollHint />
       </div>
-      <button
+      {/* <button
         style={{
           position: "absolute",
           right: 0,
@@ -726,7 +767,11 @@ function App() {
         }}
       >
         90
-      </button>
+      </button> */}
+      <div className="audiocontroller" onClick={playBGAudio}>
+        <img src={soundIcon} alt="" />
+        <hr className="audiomutedslash" id="audiomutedslash" />
+      </div>
     </div>
   );
 }
