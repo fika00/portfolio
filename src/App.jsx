@@ -76,7 +76,10 @@ function App() {
   const EyeRef = useRef();
   const bloomRef = useRef();
   const middleGrey = useRef(0.6);
+  const chromAb = useRef();
+
   const ready = useRef(false);
+  const isRotating = useRef(false);
 
   const start_pos = [1.25, -0.02, 2.55];
   const start_rot = [0.015, 0.625, -0.0053];
@@ -115,9 +118,9 @@ function App() {
   };
   const handlePostEffects = () => {
     gsap.to(bloomRef.current, {
-      luminanceThreshold: 0.01,
-      luminanceSmoothing: 0.2,
-      intensity: 1.7,
+      luminanceThreshold: 0.8,
+      luminanceSmoothing: 0.4,
+      intensity: 1,
 
       duration: 1, // Duration of the animation in seconds
       ease: "Power1.easeInOut",
@@ -128,11 +131,14 @@ function App() {
       duration: 1, // Duration of the animation in seconds
       ease: "Power1.easeInOut",
     });
+    gsap.set(chromAb.current, {
+      offset: [0, 0],
+
+      duration: 1,
+      ease: "Power1.easeInOut",
+    });
 
     // bloomRef.current.luminanceThreshold = 0.9;
-    setTimeout(() => {
-      console.log(bloomRef.current, middleGrey.current);
-    }, 1200);
   };
   const handlePostEffectsDefault = () => {
     gsap.to(bloomRef.current, {
@@ -149,11 +155,13 @@ function App() {
       duration: 1, // Duration of the animation in seconds
       ease: "Power1.easeInOut",
     });
+    gsap.set(chromAb.current, {
+      offset: [0.001, 0],
 
+      duration: 1,
+      ease: "Power1.easeInOut",
+    });
     // bloomRef.current.luminanceThreshold = 0.9;
-    setTimeout(() => {
-      console.log(bloomRef.current, middleGrey.current);
-    }, 1200);
   };
   const handleBack = (e) => {
     isScrollableRef.current = false;
@@ -243,7 +251,18 @@ function App() {
     const cont1 = document.getElementById("content1");
     const cont2 = document.getElementById("content2");
 
-    if (isScrollableRef) {
+    // if (currentPointRef.current != 0 && !isRotating.current) {
+    //   document.getElementById("scrollhintelement").style.display = "none";
+    //   EyeRef.current.triggerUVEffect();
+    //   handlePostEffects();
+    //   isRotating.current = true;
+    // } else if (currentPointRef.current == 0 && isRotating.current) {
+    //   EyeRef.current.stopUVEffect();
+    //   handlePostEffectsDefault();
+    //   isRotating.current = false;
+    // }
+
+    if (isScrollableRef.current) {
       if (
         positionRef.current <= -0.35 &&
         positionRef.current >= -1.45 &&
@@ -254,6 +273,9 @@ function App() {
         cont2.style.zIndex = 0;
         cont2.style.opacity = 0;
 
+        // EyeRef.current.triggerUVEffect();
+        // handlePostEffects();
+        console.log("PRVI");
         currentPointRef.current = 1;
         sliceright.style.opacity = 1;
         sliceleft.style.opacity = 0;
@@ -284,6 +306,10 @@ function App() {
         currentPointRef.current = 0;
         sliceright.style.opacity = 0;
         sliceleft.style.opacity = 0;
+        console.log("NULTI");
+
+        // EyeRef.current.stopUVEffect();
+        // handlePostEffectsDefault();
 
         // Use GSAP to animate the camera's position and rotation
         gsap.to(camRef.current.position, {
@@ -308,6 +334,8 @@ function App() {
         cont1.style.zIndex = 0;
         cont2.style.opacity = 1;
         cont1.style.opacity = 0;
+
+        console.log("DRUGi");
 
         currentPointRef.current = 2;
         sliceright.style.opacity = 0;
@@ -393,9 +421,6 @@ function App() {
 
     icoRef.current.position.y = -positionRef.current * 10;
 
-    if (currentPointRef.current != 0) {
-      document.getElementById("scrollhintelement").style.display = "none";
-    }
     // console.log("Position: ", camRef.current.position);
     // console.log("Rotation: ", camRef.current.rotation);
     const scrollb = document.getElementById("scrollbar");
@@ -418,19 +443,6 @@ function App() {
 
   // const bgcolor = "rgb(97, 75, 92)";
   const bgcolor = 0x343873;
-
-  useEffect(() => {
-    if (ready.current) {
-      console.log(currentPointRef.current);
-      if (currentPointRef.current != 0) {
-        EyeRef.current.triggerUVEffect();
-        handlePostEffects();
-      } else {
-        EyeRef.current.stopUVEffect();
-        handlePostEffectsDefault();
-      }
-    }
-  }, [currentPointRef]);
 
   return (
     <div
@@ -563,7 +575,7 @@ function App() {
             luminanceSmoothing={0.45}
             height={250}
           />
-          <ChromaticAberration offset={[0.001, 0]} />
+          <ChromaticAberration ref={chromAb} offset={[0.001, 0]} />
           <ToneMapping ref={middleGrey} middleGrey={1} />
           <Vignette darkness={0.3} />
         </EffectComposer>

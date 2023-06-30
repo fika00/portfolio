@@ -50,7 +50,7 @@ const Experience = (props, ref) => {
 
   const triggerUVEffect = () => {
     gsap.to(uTime, {
-      current: 0.5,
+      current: 0.4,
       duration: 1, // Duration of the animation in seconds
       ease: "Power1.easeInOut",
     });
