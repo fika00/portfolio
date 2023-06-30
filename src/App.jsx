@@ -430,7 +430,7 @@ function App() {
         handlePostEffectsDefault();
       }
     }
-  }, [currentPointRef.current]);
+  }, [currentPointRef]);
 
   return (
     <div
