@@ -15,7 +15,7 @@ const AnimatedText = ({ text, cl }) => {
   });
   useEffect(() => {
     const animateText = () => {
-      const animationDelay = 100; // Adjust this value to control the animation speed
+      const animationDelay = 50; // Adjust this value to control the animation speed
       const textArray = text.split("");
       let animatedText = "";
 
@@ -79,7 +79,7 @@ const AnimatedText = ({ text, cl }) => {
     } else if (cl == 2) {
       if (isDone) {
         document.getElementById(`slice-${cl}`).style.opacity = 1;
-        document.getElementById(`slice-${cl}`).style.width = `30%`;
+        document.getElementById(`slice-${cl}`).style.width = `47%`;
       } else {
         document.getElementById(`slice-${cl}`).style.width = "0%";
         document.getElementById(`slice-${cl}`).style.opacity = 0;
@@ -92,25 +92,31 @@ const AnimatedText = ({ text, cl }) => {
       document.getElementById(`slice-${cl}`).style.opacity = 0;
     }
   }, [isDone]);
+  let isAfterSpace = false;
+
   return (
-    <div
-      style={{
-        position: "relative",
-        display: "inline",
-      }}
-    >
-      {text.split("").map((letter, index) => (
-        <span className="headeranim" key={index} id={`letter-${index}-${cl}`}>
-          {letter}
-        </span>
-      ))}
+    <div style={{ position: "relative", display: "inline" }}>
+      {text.split("").map((letter, index) => {
+        if (letter === " ") {
+          isAfterSpace = true;
+        }
+
+        const classNames = `headeranim ${isAfterSpace ? "before" : ""}`;
+
+        return (
+          <span className={classNames} key={index} id={`letter-${index}-${cl}`}>
+            {letter}
+          </span>
+        );
+      })}
       <hr
         id={`slice-${cl}`}
         style={{
           width: "0%",
           opacity: 0,
           position: "absolute",
-          bottom: -10,
+          bottom: -25,
+          height: "5px",
           left: 0,
           transition: "1s",
         }}

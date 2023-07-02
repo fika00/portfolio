@@ -24,6 +24,7 @@ import {
   Vignette,
   ToneMapping,
   ChromaticAberration,
+  Outline,
 } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 import { useControls } from "leva";
@@ -44,6 +45,8 @@ import soundIcon from "/imgs/sound.png";
 import background_audio from "/audio/Gamela.mp3";
 import LoadingScreen from "./components/LoadingScreen";
 import ScrollHint from "./components/ScrollHint";
+import GlitchyText from "./components/GlitchyText";
+import TextTransitionSlide from "./components/TextTransitionSlide";
 
 function App() {
   const dispatch = useDispatch();
@@ -74,13 +77,14 @@ function App() {
   const detail_dir = useRef(0);
   const videoscale = useRef(0.1);
   const audioRef = useRef();
-  const didScroll = useRef(false);
   const EyeRef = useRef();
   const bloomRef = useRef();
   const middleGrey = useRef(0.6);
   const chromAb = useRef();
   const isScrolling = useRef(false);
   const isPlayingBGAudio = useRef(false);
+  const textRef = useRef();
+  const testRef = useRef();
 
   const ready = useRef(false);
   const isRotating = useRef(false);
@@ -149,7 +153,7 @@ function App() {
       ease: "Power1.easeInOut",
     });
     gsap.set(chromAb.current, {
-      offset: [0, 0],
+      offset: [0.00015, 0],
 
       duration: 1,
       ease: "Power1.easeInOut",
@@ -180,6 +184,7 @@ function App() {
     });
     // bloomRef.current.luminanceThreshold = 0.9;
   };
+
   const handleBack = (e) => {
     isScrollableRef.current = false;
     const pos = [0.85, -0.05, 0.79];
@@ -262,21 +267,8 @@ function App() {
 
   // let currentPoint = 0;
   function animate() {
-    const sliceright = document.getElementById("sliceright");
-    const sliceleft = document.getElementById("sliceleft");
     const cont1 = document.getElementById("content1");
     const cont2 = document.getElementById("content2");
-
-    // if (currentPointRef.current != 0 && !isRotating.current) {
-    //   document.getElementById("scrollhintelement").style.display = "none";
-    //   EyeRef.current.triggerUVEffect();
-    //   handlePostEffects();
-    //   isRotating.current = true;
-    // } else if (currentPointRef.current == 0 && isRotating.current) {
-    //   EyeRef.current.stopUVEffect();
-    //   handlePostEffectsDefault();
-    //   isRotating.current = false;
-    // }
 
     if (isScrollableRef.current) {
       if (currentScrollPoint == -1 && currentPointRef.current != 1) {
@@ -285,14 +277,13 @@ function App() {
         cont2.style.zIndex = 0;
         cont2.style.opacity = 0;
 
+        document.getElementById("scrollhintelement").style.display = "none";
+
         EyeRef.current.triggerUVEffect();
         handlePostEffects();
 
-        console.log("PRVI");
         currentPointRef.current = 1;
-        sliceright.style.opacity = 1;
-        sliceleft.style.opacity = 0;
-        // Use GSAP to animate the camera's position and rotation
+
         gsap.to(camRef.current.position, {
           x: point1_pos[0],
           y: point1_pos[1],
@@ -315,8 +306,7 @@ function App() {
         cont1.style.opacity = 0;
 
         currentPointRef.current = 0;
-        sliceright.style.opacity = 0;
-        sliceleft.style.opacity = 0;
+
         console.log("NULTI");
 
         EyeRef.current.stopUVEffect();
@@ -347,9 +337,6 @@ function App() {
         console.log("DRUGi");
 
         currentPointRef.current = 2;
-        sliceright.style.opacity = 0;
-
-        sliceleft.style.opacity = 1;
 
         gsap.to(camRef.current.position, {
           x: point2_pos[0],
@@ -494,6 +481,7 @@ function App() {
         <PerspectiveCamera
           ref={camRef}
           makeDefault
+          fov={55}
           position={[1.25, -0.02, 2.55]}
           rotation={[0.015, 0.625, -0.0053]}
         />
@@ -574,20 +562,20 @@ function App() {
                 envMap
               />
             </mesh> */}
-            <Sparkles count={100} noise={1} scale={5} speed={0.3} />
+            <Sparkles count={60} noise={1} scale={5} speed={0.3} />
             <Sparkles
               position={[0, -10, 0]}
               count={100}
-              noise={1}
+              noise={16}
               scale={5}
-              speed={0.3}
+              speed={1.5}
             />
             <Sparkles
               position={[0, -20, 0]}
               count={100}
-              noise={1}
+              noise={5}
               scale={5}
-              speed={0.3}
+              speed={0.75}
             />
           </group>
 
@@ -619,6 +607,7 @@ function App() {
           <ChromaticAberration ref={chromAb} offset={[0.001, 0]} />
           <ToneMapping ref={middleGrey} middleGrey={1} />
           <Vignette darkness={0.3} />
+          <Outline />
         </EffectComposer>
         {/* <OrbitControls /> */}
         <group position={[0, 0, -5]}>
@@ -652,7 +641,7 @@ function App() {
       <div className="wrappercontent" id="contentwrap_all">
         <div id="content1" className="containerContent">
           <div className="column">
-            <div className="para right">
+            {/* <div className="para right">
               <RandomTextAnimation
                 text={`I would currently consider myself an experienced junior programmer.
               Through collage and self interest I have aquired a nice vocabulary
@@ -662,11 +651,13 @@ function App() {
               />
             </div>
 
-            <hr id="sliceright" className="slice right" />
+            <hr id="sliceright" className="slice right" /> */}
             <div
               style={{
                 zIndex: 5000,
+                cursor: "pointer",
               }}
+              className="sdheader"
               onClick={handleBack}
             >
               <AnimatedText text={"SOFTWARE DEVELOPER"} cl={1} />
@@ -676,16 +667,22 @@ function App() {
 
         <div id="content2" className="containerContent2">
           <div className="column">
-            <div className="para">
+            {/* <div className="para">
               <RandomTextAnimation
                 text={`I've been producing video and photo since I was a kid. Mostly implementing the knowladge into webdesign, but I do some projects on the side.`}
                 delay={3}
                 cl={2}
               />
             </div>
-            <hr id="sliceleft" className="slice left" />
-            <div onClick={handleBackVP}>
-              <AnimatedText text={"Video Production"} cl={2} />
+            <hr id="sliceleft" className="slice left" /> */}
+            <div
+              style={{
+                cursor: "pointer",
+              }}
+              className="vpheader"
+              onClick={handleBackVP}
+            >
+              <AnimatedText key={"video"} text={"Video Prod."} cl={2} />
             </div>
           </div>
         </div>
@@ -724,54 +721,23 @@ function App() {
       <div id="scrollhintelement" className="scrollhintcontainer">
         <ScrollHint />
       </div>
-      {/* <button
-        style={{
-          position: "absolute",
-          right: 0,
-          top: 0,
-          zIndex: 9999999999,
-        }}
-        onClick={() => {
-          EyeRef.current.triggerUVEffect();
-          handlePostEffects();
-          console.log("Done");
-        }}
-      >
-        Test
-      </button>
-      <button
-        style={{
-          position: "absolute",
-          right: 0,
-          top: "10%",
-          zIndex: 9999999999,
-        }}
-        onClick={() => {
-          EyeRef.current.stopUVEffect();
-          handlePostEffectsDefault();
-          console.log("Done");
-        }}
-      >
-        Stop
-      </button>
-      <button
-        style={{
-          position: "absolute",
-          right: 0,
-          top: "20%",
-          zIndex: 9999999999,
-        }}
-        onClick={() => {
-          EyeRef.current.rotate90();
-          console.log("Done");
-        }}
-      >
-        90
-      </button> */}
+
       <div className="audiocontroller" onClick={playBGAudio}>
         <img src={soundIcon} alt="" />
         <hr className="audiomutedslash" id="audiomutedslash" />
       </div>
+      {/* <div
+        style={{
+          position: "absolute",
+          top: "10%",
+          left: "50%",
+          zIndex: 999999,
+        }}
+      >
+        <TextTransitionSlide ref={testRef} text={"Testiram ovo govno"} />
+        <button onClick={handleTransition}>BringIn</button>
+        <button onClick={handleScatter}>Scatter</button>
+      </div> */}
     </div>
   );
 }

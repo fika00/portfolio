@@ -3,6 +3,14 @@
 /* * {
   overflow: hidden;
 } */
+@font-face {
+  font-family: stx;
+  src: url("stx.woff2") format("woff2");
+}
+@font-face {
+  font-family: mnr;
+  src: url("mnr.woff2") format("woff2");
+}
 #root {
   width: 100%;
   height: 100vh;
@@ -53,25 +61,26 @@
   font-family: "Playfair", serif;
   margin: 0;
   /* font-family: "Bebas Neue", sans-serif; */
-  font-size: 3rem;
   /* font-family: "Anton", sans-serif; */
   align-self: center;
-  text-align: center;
+  text-align: left;
+  display: none;
 }
 .random-text-animation__word {
   opacity: 0;
   transition: 1s;
-  font-family: "Bebas Neue", sans-serif;
-  /* font-family: "Rajdhani", sans-serif; */
-  font-family: "Orbitron", sans-serif;
-  /* font-family: "Coda", cursive; */
-  /* font-family: "Megrim", cursive; */
-  /* font-family: "Source Code Pro", monospace; */
-  font-size: 1.5rem;
+
+  /* font-family: "Orbitron", sans-serif; */
+
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-family: mnr;
+  letter-spacing: 17px;
 }
 
 .para.right {
-  text-align: center;
+  text-align: right;
+  display: none;
 }
 .slice {
   width: 100%;
@@ -125,25 +134,48 @@
   position: absolute;
   width: 40%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   bottom: 0;
   right: 0;
   transition: 0.5s;
 }
 .headeranim {
-  font-family: "Bebas Neue", sans-serif;
+  /* font-family: "Bebas Neue", sans-serif; */
+  font-family: "stx", sans-serif;
 
-  font-size: 40px;
+  font-size: 60px;
+  letter-spacing: 15.4px;
+  text-transform: uppercase;
 
   display: inline-block;
-  transition: transform 0.5s ease, opacity 0.5s ease, filter 1s;
+  transition: transform 0.5s ease, opacity 0.2s ease, filter 0.8s;
+  /* -webkit-text-stroke-width: 0.02rem;
+  -webkit-text-stroke-color: white; */
+}
+.before {
+  color: #00000000;
+  -webkit-text-stroke-width: 0.04rem;
+  -webkit-text-stroke-color: white;
+}
+.vpheader {
+  position: absolute;
+  text-align: left;
+  top: 0;
+  left: 0;
+}
+
+.sdheader {
+  position: absolute;
+  text-align: right;
+  bottom: 0;
 }
 .containerContent2 {
   padding: 0;
   position: absolute;
   width: 40%;
   display: flex;
-  bottom: 0;
+  top: 0;
   left: 0;
   transition: 0.5s;
 }
@@ -167,6 +199,12 @@
 }
 #backbtn {
   font-family: alarmclock, sans-serif;
+}
+.TextTransitionSlide {
+  transition: 0.4s cubic-bezier(0.32, 0, 0.1, 0.98);
+  display: inline-block;
+  white-space: pre;
+  font-size: 25px;
 }
 @media only screen and (max-width: 600px) {
   .para,

@@ -59,22 +59,25 @@ const Experience = (props, ref) => {
     const uTimeVal = pupilRef.current.material.userData.shader.uniforms.uTime;
     const scaler =
       Math.ceil(uTimeVal.value / (degToRad(360) * 10)) * degToRad(360) * 10;
-
-    const endPoint = uTimeVal.value + (scaler - uTimeVal.value);
+    let endPoint = uTimeVal.value + (scaler - uTimeVal.value);
+    if (radToDeg((endPoint - uTimeVal.value) / 10) < 80) {
+      endPoint += degToRad(360) * 10;
+    }
 
     console.log(
       "Current: ",
-      uTimeVal.value,
+      radToDeg(uTimeVal.value) / 10,
       "endPoint: ",
-      endPoint,
-      "scaler: ",
-      scaler
+      radToDeg(endPoint / 10),
+
+      "Difference: ",
+      radToDeg((endPoint - uTimeVal.value) / 10)
     );
 
     uTime.current = 0;
     gsap.to(uTimeVal, {
       value: endPoint,
-      duration: 1.5, // Duration of the animation in seconds
+      duration: 2, // Duration of the animation in seconds
       ease: "Power1.easeOut",
     });
   };
@@ -214,6 +217,7 @@ const Experience = (props, ref) => {
     envMap: envMap,
     roughness: 0.1,
     metalness: 1,
+    // wireframe: true,
     onBeforeCompile: (shader) => {
       shader.uniforms.uTime = { value: 0 };
       shader.fragmentShader =

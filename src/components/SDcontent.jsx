@@ -12,9 +12,10 @@ import sg3 from "/imgs/sg3.png";
 import rip from "/imgs/rip.jpg";
 import displacement from "/imgs/glitch3.jpg";
 import arrow from "/imgs/arrow.svg";
+import GlitchyText from "./GlitchyText";
 
 const SDcontent = (props) => {
-  const titles = ["Machine Learning", "Arduino/Iot", "WebDev"];
+  const titles = ["Machine Learning", "IoT", "WebDev"];
   const logos = [id, sg3, sg];
   const tools = [
     ["Python", "Mediapipe"],
@@ -33,6 +34,7 @@ const SDcontent = (props) => {
   const displacediv = document.getElementById("displace");
   const [isOn, setIsOn] = useState(false);
   const detailed = useRef(false);
+  const textRef = useRef();
 
   useEffect(() => {
     if (currentIndex == 0) {
@@ -50,6 +52,7 @@ const SDcontent = (props) => {
     } else {
       document.getElementById("po3").style.transform = "scale(1)";
     }
+    handleStartAnim();
   }, [currentIndex]);
   useEffect(() => {
     if (isOn) {
@@ -89,13 +92,19 @@ const SDcontent = (props) => {
       displacediv.setAttribute("scale", `0`);
     }, 800);
   };
+
+  const handleStartAnim = () => {
+    textRef.current.handleCanStart();
+    textRef.current.startAnim();
+  };
+
   const handleNext = () => {
     if (currentIndex < titles.length - 1) {
       //Animating the displacement
       const increment = setInterval(() => {
         const scalerat = Math.random() * (30 - -30) + -30;
 
-        displacediv.setAttribute("scale", `${scalerat}`);
+        // displacediv.setAttribute("scale", `${scalerat}`);
       }, Math.random() * 12);
 
       document.getElementById("img").style.filter = "blur(10px)";
@@ -103,6 +112,7 @@ const SDcontent = (props) => {
         document.getElementById("img").style.filter = "blur(0px)";
 
         setCurrentIndex(currentIndex + 1);
+
         //Closing the animation of the displacement
 
         setTimeout(() => {
@@ -110,13 +120,14 @@ const SDcontent = (props) => {
           displacediv.setAttribute("scale", `${0}`);
         }, 700);
       }, 500);
+      handleStartAnim();
     } else {
       document.getElementById("img").style.filter = "blur(10px)";
       //Animating the displacement
       const increment = setInterval(() => {
         const scalerat = Math.random() * (15 - -15) + -15;
 
-        displacediv.setAttribute("scale", `${scalerat}`);
+        // displacediv.setAttribute("scale", `${scalerat}`);
       }, Math.random() * 12);
       setTimeout(() => {
         document.getElementById("img").style.filter = "blur(0px)";
@@ -129,6 +140,7 @@ const SDcontent = (props) => {
           displacediv.setAttribute("scale", `${0}`);
         }, 700);
       }, 500);
+      handleStartAnim();
     }
   };
 
@@ -182,7 +194,9 @@ const SDcontent = (props) => {
       document.getElementById("contentwrapper").style.zIndex = 0;
     }
   }, [play]);
-
+  useEffect(() => {
+    handleStartAnim();
+  }, []);
   return (
     <div id="contentwrapper" className="contentwrapper">
       <div className="contentcontainer">
@@ -205,8 +219,6 @@ const SDcontent = (props) => {
           }}
         >
           <img
-            onMouseEnter={() => setIsOn(true)}
-            onMouseLeave={() => setIsOn(false)}
             // onClick={handleClick}
             id="img"
             src={logos[currentIndex]}
@@ -217,7 +229,9 @@ const SDcontent = (props) => {
             }}
           />
           <div id="paragraph" className="paratext">
-            <p className="paragraph_text">{paras[currentIndex]}</p>
+            <div className="paragraph_text">
+              <GlitchyText ref={textRef} text={paras[currentIndex]} />
+            </div>
             <div className="tools">
               {tools[currentIndex].map((tool) => (
                 <div className="lang" key={`${tool}lang`}>
@@ -254,6 +268,7 @@ const SDcontent = (props) => {
             onClick={() => {
               props.onPressNav();
               handleBack();
+              handleCanStart();
             }}
           >
             <h1

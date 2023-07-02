@@ -19,6 +19,9 @@ import playicon from "/imgs/play.svg";
 import next from "/imgs/next.svg";
 import { Image } from "@react-three/drei";
 
+import GlitchyText from "./GlitchyText";
+import TextTransitionSlide from "./TextTransitionSlide";
+
 const VPcontent = (props) => {
   const titles = ["My mind.", "Pages of Life.", "Halls.", "Society."];
   const text = [
@@ -38,23 +41,8 @@ const VPcontent = (props) => {
   const [start_play, setStart_play] = useState(false);
   const [current_index, setCurrentIndex] = useState(0);
   const videolist = [video1, video2, video3, video4];
-  // useEffect(() => {
-  //   if (current_index == 0) {
-  //     document.getElementById("poi1").style.transform = "scale(3)";
-  //   } else {
-  //     document.getElementById("poi1").style.transform = "scale(1)";
-  //   }
-  //   if (current_index == 1) {
-  //     document.getElementById("poi2").style.transform = "scale(3)";
-  //   } else {
-  //     document.getElementById("poi2").style.transform = "scale(1)";
-  //   }
-  //   if (current_index == 2) {
-  //     document.getElementById("poi3").style.transform = "scale(3)";
-  //   } else {
-  //     document.getElementById("poi3").style.transform = "scale(1)";
-  //   }
-  // }, [current_index]);
+  const videoStoryRef = useRef();
+
   useEffect(() => {
     if (play == 2) {
       document.getElementById("contentwrapper2").style.opacity = 1;
@@ -66,6 +54,10 @@ const VPcontent = (props) => {
       setStart_play(false);
     }
   }, [play]);
+
+  useEffect(() => {
+    handleTransition();
+  }, []);
   const darkenIt = () => {
     const darkenDiv = document.getElementById("darken");
     const loader = document.getElementById("loader");
@@ -75,6 +67,8 @@ const VPcontent = (props) => {
   };
   const handleGoNext = () => {
     darkenIt();
+    handleScatter();
+
     setTimeout(() => {
       if (current_index < videolist.length - 1) {
         setCurrentIndex(current_index + 1);
@@ -85,6 +79,8 @@ const VPcontent = (props) => {
   };
   const handleGoBack = () => {
     darkenIt();
+    handleScatter();
+
     setTimeout(() => {
       if (current_index > 0) {
         setCurrentIndex(current_index - 1);
@@ -100,6 +96,13 @@ const VPcontent = (props) => {
     darkenDiv.style.backgroundColor = "#00000000";
     loader.style.opacity = 0;
   };
+  const handleTransition = () => {
+    videoStoryRef.current.bringIn();
+  };
+  const handleScatter = () => {
+    videoStoryRef.current.scatter();
+  };
+
   useEffect(() => {
     const link = document.getElementById("linkel");
     if (current_index == 3) {
@@ -110,7 +113,11 @@ const VPcontent = (props) => {
 
       link.style.opacity = 1;
     }
+    setTimeout(() => {
+      handleTransition();
+    }, 300);
   }, [current_index]);
+
   return (
     <div id="contentwrapper2" className="contentwrapper2">
       <div className="videotextwrap">
@@ -144,7 +151,12 @@ const VPcontent = (props) => {
             </a>
             <h1 className="vidtitle">{titles[current_index]}</h1>
           </div>
-          <p className="videostory">{text[current_index]}</p>
+          <p className="videostory">
+            <TextTransitionSlide
+              ref={videoStoryRef}
+              text={text[current_index]}
+            />
+          </p>
           <div className="toolsvp">
             {platforms.map((tool) => (
               <div className="platform" key={tool}>

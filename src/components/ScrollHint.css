@@ -2,13 +2,13 @@
   1% {
     bottom: 5%;
   }
-  4% {
+  9% {
     opacity: 1;
   }
-  8% {
+  21% {
     bottom: 95%;
   }
-  12% {
+  35% {
     opacity: 0;
   }
 }
@@ -22,8 +22,8 @@
   aspect-ratio: 1;
   position: absolute;
   bottom: 5%;
-  width: 5px;
+  width: 10px;
   background-color: rgba(255, 255, 255, 0.521);
-  animation: scrollhintanim 8s infinite ease-in-out;
+  animation: scrollhintanim 4s infinite ease-in-out;
   animation-delay: 6s;
 }

@@ -4,7 +4,7 @@
 
   height: 60%;
   /* background-color: rgba(32, 101, 128, 0.233); */
-  background-color: rgba(128, 32, 32, 0.233);
+  /* background-color: rgba(128, 32, 32, 0.233); */
 
   top: 50%;
   left: 50%;
@@ -34,13 +34,17 @@
   filter: url(#displacementFilter);
   /* background-color: aqua; */
 }
-.paragraph_text {
-  font-family: "Red Hat Display", sans-serif;
-  font-size: 1.5rem;
+.testingmonospace {
+  font-family: "stx", monospace;
+  letter-spacing: 5px;
 }
+
 .title_text {
   font-family: "DM Serif Display", serif;
   font-size: 2rem;
+  font-family: stx;
+  text-transform: uppercase;
+  font-weight: 300;
 }
 #img {
   transition: 0.5s;
@@ -82,13 +86,29 @@
   justify-content: space-around;
 }
 .paratext {
-  width: 35%;
+  width: 55%;
   align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   transition: 0.5s;
+  height: 45%;
+}
+.paragraph_text {
+  /* font-family: "Red Hat Display", sans-serif; */
+  font-family: "Roboto Mono", monospace;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  height: 60%;
+  /* background-color: #000000; */
 }
 .actualtext {
   font-family: "Red Hat Display", sans-serif;
   display: inline;
+
   /* background-color: aliceblue; */
 }
 @keyframes toolsglow {
