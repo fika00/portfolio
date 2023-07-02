@@ -10,7 +10,7 @@ import sg from "/imgs/sg.png";
 import sg2 from "/imgs/sg2.png";
 import sg3 from "/imgs/sg3.png";
 import rip from "/imgs/rip.jpg";
-import displacement from "/imgs/glitch3.jpg";
+import displacement from "/imgs/glitch4.jpg";
 import arrow from "/imgs/arrow.svg";
 import GlitchyText from "./GlitchyText";
 
@@ -102,15 +102,12 @@ const SDcontent = (props) => {
     if (currentIndex < titles.length - 1) {
       //Animating the displacement
       const increment = setInterval(() => {
-        const scalerat = Math.random() * (30 - -30) + -30;
+        const scalerat = Math.random() * (10 - -10) + -10;
 
         // displacediv.setAttribute("scale", `${scalerat}`);
       }, Math.random() * 12);
 
-      document.getElementById("img").style.filter = "blur(10px)";
       setTimeout(() => {
-        document.getElementById("img").style.filter = "blur(0px)";
-
         setCurrentIndex(currentIndex + 1);
 
         //Closing the animation of the displacement
@@ -122,16 +119,13 @@ const SDcontent = (props) => {
       }, 500);
       handleStartAnim();
     } else {
-      document.getElementById("img").style.filter = "blur(10px)";
       //Animating the displacement
       const increment = setInterval(() => {
-        const scalerat = Math.random() * (15 - -15) + -15;
+        const scalerat = Math.random() * (10 - -10) + -10;
 
         // displacediv.setAttribute("scale", `${scalerat}`);
       }, Math.random() * 12);
       setTimeout(() => {
-        document.getElementById("img").style.filter = "blur(0px)";
-
         setCurrentIndex(0);
         //Closing the animation of the displacement
 
@@ -148,11 +142,10 @@ const SDcontent = (props) => {
     if (currentIndex > 0) {
       //Animating the displacement
       const increment = setInterval(() => {
-        const scalerat = Math.random() * (30 - -30) + -30;
+        const scalerat = Math.random() * (10 - -10) + -10;
 
         displacediv.setAttribute("scale", `${scalerat}`);
       }, Math.random() * 12);
-      document.getElementById("img").style.filter = "blur(10px)";
       setTimeout(() => {
         setCurrentIndex(currentIndex - 1);
         //Closing the animation of the displacement
@@ -161,20 +154,16 @@ const SDcontent = (props) => {
           clearInterval(increment);
           displacediv.setAttribute("scale", `${0}`);
         }, 700);
-
-        document.getElementById("img").style.filter = "blur(0px)";
       }, 500);
     } else {
       //Animating the displacement
       const increment = setInterval(() => {
-        const scalerat = Math.random() * (30 - -30) + -30;
+        const scalerat = Math.random() * (10 - -10) + -10;
 
         displacediv.setAttribute("scale", `${scalerat}`);
       }, Math.random() * 12);
-      document.getElementById("img").style.filter = "blur(10px)";
       setTimeout(() => {
         setCurrentIndex(titles.length - 1);
-        document.getElementById("img").style.filter = "blur(0px)";
         //Closing the animation of the displacement
 
         setTimeout(() => {
@@ -218,16 +207,18 @@ const SDcontent = (props) => {
             zIndex: 1000,
           }}
         >
-          <img
-            // onClick={handleClick}
-            id="img"
-            src={logos[currentIndex]}
-            alt=""
-            style={{
-              transition: "1s",
-              zIndex: 15,
-            }}
-          />
+          <div className="displ">
+            <img
+              // onClick={handleClick}
+              id="img"
+              src={logos[currentIndex]}
+              alt=""
+              style={{
+                transition: "1s",
+                zIndex: 15,
+              }}
+            />
+          </div>
           <div id="paragraph" className="paratext">
             <div className="paragraph_text">
               <GlitchyText ref={textRef} text={paras[currentIndex]} />

@@ -31,7 +31,6 @@
   align-self: center;
   margin: auto;
   transition: cubic-bezier(0.27, 0.3, 0.16, 0.99) 0.5s;
-  filter: url(#displacementFilter);
   /* background-color: aqua; */
 }
 .testingmonospace {
@@ -48,9 +47,13 @@
 }
 #img {
   transition: 0.5s;
-  height: 90%;
   align-self: center;
   /* background-color: aliceblue; */
+}
+.displ {
+  height: 90%;
+
+  filter: url(#displacementFilter);
 }
 .contentcontainer {
   width: 100%;
@@ -99,7 +102,7 @@
   font-family: "Roboto Mono", monospace;
   display: flex;
   align-items: center;
-  font-size: 1rem;
+  font-size: 1.1rem;
   letter-spacing: 10px;
   text-transform: uppercase;
   height: 60%;
