@@ -136,8 +136,8 @@
     z-index: 99999;
   }
   .topside {
-    width: 90%;
-    margin: auto;
+    position: relative;
+    width: 100%;
   }
   .arrowimg {
     height: 30%;
@@ -146,33 +146,30 @@
     bottom: 14%;
   }
   .videotextwrap {
-    /* background-color: #bb4040; */
+    position: absolute;
     width: 100%;
-    height: 100%;
+    height: 90%;
+    /* background-color: #bb4040; */
+    display: flex;
     flex-direction: column;
-    justify-content: center;
   }
   .videoplayer {
-    left: 50%;
-    top: 50%;
+    position: relative;
+    left: unset;
+    top: unset;
+    transform: unset;
     width: 100%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    height: auto;
     z-index: 99999;
+    /* background-color: #000000; */
   }
-  .toolsvp {
-    display: none;
-  }
+
   .anchorlink {
     width: 8%;
     margin-top: 3%;
   }
-  .videostory {
-    display: none;
-  }
+
   .videodetail {
-    width: 100%;
+    width: 90%;
     height: 90%;
   }
   #displace {
@@ -182,7 +179,8 @@
     font-size: 2rem;
   }
   .contentwrapper2 {
-    height: 60%;
+    height: 90%;
+    display: flex;
   }
 
   .right {
@@ -194,11 +192,28 @@
   }
   .videoplayer {
     border-radius: 0;
+    width: 100%;
+  }
+  .videostory {
+    font-size: 1rem;
+  }
+  .TextTransitionSlide {
+    font-size: 1rem;
+  }
+  .toolsvp {
+    display: none;
+  }
+  .platform {
+    width: 50%;
+    text-align: center;
+  }
+  .platformtxt {
+    font-size: 16px;
   }
 }
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1) {
   .videostory {
-    font-size: 1.4rem;
+    font-size: 1.4em;
   }
   .platformtxt {
     font-size: 1.3rem;

@@ -47,17 +47,16 @@ const VPcontent = (props) => {
     if (play == 2) {
       document.getElementById("contentwrapper2").style.opacity = 1;
       document.getElementById("contentwrapper2").style.zIndex = 9999;
+      handleTransition();
       setStart_play(true);
     } else {
       document.getElementById("contentwrapper2").style.opacity = 0;
       document.getElementById("contentwrapper2").style.zIndex = 0;
+      handleScatter();
       setStart_play(false);
     }
   }, [play]);
 
-  useEffect(() => {
-    handleTransition();
-  }, []);
   const darkenIt = () => {
     const darkenDiv = document.getElementById("darken");
     const loader = document.getElementById("loader");
@@ -175,25 +174,6 @@ const VPcontent = (props) => {
       </div>
 
       <div className="contentcontainer">
-        <svg xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
-          <defs>
-            <filter id="displacementFilter">
-              <feImage
-                xlinkHref={displacement}
-                result="displacementMap"
-                scale={1}
-              />
-              <feDisplacementMap
-                in="SourceGraphic"
-                in2="displacementMap"
-                scale="0"
-                xChannelSelector="R"
-                yChannelSelector="A"
-                id="displace"
-              />
-            </filter>
-          </defs>
-        </svg>
         <div className="arrows">
           <div
             className="arrow left"

@@ -11,7 +11,7 @@ import {
   ShaderMaterial,
 } from "three";
 
-import { useRef, useLayoutEffect, useEffect, useState } from "react";
+import { useRef, useLayoutEffect, useEffect, useState, useMemo } from "react";
 import { gsap } from "gsap";
 import {
   useGLTF,
@@ -50,13 +50,14 @@ const Experience = (props, ref) => {
 
   const triggerUVEffect = () => {
     gsap.to(uTime, {
-      current: 0.4,
+      current: 0.5,
       duration: 1, // Duration of the animation in seconds
       ease: "Power1.easeInOut",
     });
   };
   const stopUVEffect = () => {
     const uTimeVal = pupilRef.current.material.userData.shader.uniforms.uTime;
+
     const scaler =
       Math.ceil(uTimeVal.value / (degToRad(360) * 10)) * degToRad(360) * 10;
     let endPoint = uTimeVal.value + (scaler - uTimeVal.value);
@@ -98,6 +99,7 @@ const Experience = (props, ref) => {
       try {
         pupilRef.current.material.userData.shader.uniforms.uTime.value +=
           uTime.current;
+        // console.log;
       } catch (error) {
         console.log(error);
       }
