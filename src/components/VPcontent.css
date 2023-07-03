@@ -12,7 +12,7 @@
   top: 50%;
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
-  backdrop-filter: invert(10%);
+  backdrop-filter: invert(10%) blur(30px);
   /* -webkit-backdrop-filter: invert(90%); */
   z-index: 0;
 
@@ -181,6 +181,7 @@
   .contentwrapper2 {
     height: 90%;
     display: flex;
+    width: 100%;
   }
 
   .right {
