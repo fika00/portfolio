@@ -694,7 +694,7 @@ function App() {
             position: "absolute",
             left: 10,
             top: 10,
-            zIndex: 1000,
+            zIndex: 999999,
             opacity: 0,
             transition: "1s",
           }}

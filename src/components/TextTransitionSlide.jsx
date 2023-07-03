@@ -1,6 +1,6 @@
 import { forwardRef, useImperativeHandle } from "react";
 const TextTransitionSlide = (props, ref) => {
-  const text = props.text.split("");
+  const text = props.text.split(" ");
 
   useImperativeHandle(ref, () => ({
     bringIn,
@@ -35,18 +35,25 @@ const TextTransitionSlide = (props, ref) => {
     }
   };
   return (
-    <div>
-      {text.map((letter, index) => {
+    <div className="transitionslidewrapper">
+      {text.map((word, index_w) => {
         return (
-          <span
-            className="TextTransitionSlide"
-            style={{
-              transform: `translateX(${generateRandomSide()})`,
-              opacity: 0,
-            }}
-          >
-            {letter}
-          </span>
+          <div className="eachword" key={word + index_w}>
+            {word.split("").map((letter, index_l) => {
+              return (
+                <span
+                  key={letter + index_l}
+                  className="TextTransitionSlide"
+                  style={{
+                    transform: `translateX(${generateRandomSide()})`,
+                    opacity: 0,
+                  }}
+                >
+                  {letter}
+                </span>
+              );
+            })}
+          </div>
         );
       })}
     </div>

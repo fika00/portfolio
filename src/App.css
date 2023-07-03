@@ -204,7 +204,14 @@
   transition: 0.4s cubic-bezier(0.32, 0, 0.1, 0.98);
   display: inline-block;
   white-space: pre;
+
   font-size: 25px;
+}
+.transitionslidewrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 @media only screen and (max-width: 600px) {
   .para,

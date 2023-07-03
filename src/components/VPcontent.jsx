@@ -173,40 +173,38 @@ const VPcontent = (props) => {
         </div> */}
       </div>
 
-      <div className="contentcontainer">
-        <div className="arrows">
-          <div
-            className="arrow left"
-            onClick={() => {
-              props.onPressNav();
-              handleGoBack();
+      <div className="arrows">
+        <div
+          className="arrow left"
+          onClick={() => {
+            props.onPressNav();
+            handleGoBack();
+          }}
+        >
+          <h1
+            style={{
+              width: "100%",
+              textAlign: "center",
             }}
           >
-            <h1
-              style={{
-                width: "100%",
-                textAlign: "center",
-              }}
-            >
-              {"<"}
-            </h1>
-          </div>
-          <div
-            className="arrow right"
-            onClick={() => {
-              props.onPressNav();
-              handleGoNext();
+            {"<"}
+          </h1>
+        </div>
+        <div
+          className="arrow right"
+          onClick={() => {
+            props.onPressNav();
+            handleGoNext();
+          }}
+        >
+          <h1
+            style={{
+              width: "100%",
+              textAlign: "center",
             }}
           >
-            <h1
-              style={{
-                width: "100%",
-                textAlign: "center",
-              }}
-            >
-              {">"}
-            </h1>
-          </div>
+            {">"}
+          </h1>
         </div>
       </div>
     </div>
