@@ -5,11 +5,11 @@
 } */
 @font-face {
   font-family: stx;
-  src: url("fonts/stx.woff2") format("woff2");
+  src: url("./assets/fonts/stx.woff2") format("woff2");
 }
 @font-face {
   font-family: mnr;
-  src: url("fonts/mnr.woff2") format("woff2");
+  src: url("./assets/fonts/mnr.woff2") format("woff2");
 }
 #root {
   width: 100%;
