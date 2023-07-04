@@ -616,7 +616,7 @@ function App() {
             distance={0.7}
           />
         </group>
-        {/* <Stats /> */}
+        <Stats />
       </Canvas>
       {/* <Loader /> */}
       <LoadingScreen />

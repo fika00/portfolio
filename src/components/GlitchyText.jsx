@@ -17,9 +17,14 @@ const GlitchyText = (props, ref) => {
     startAnim,
   }));
   //   setGlitched(letters)
-  const getRandomCharacter = () => {
+  const getRandomCharacter = (len) => {
     const characters = "qwertyuiopasdfghjklzxcvbnm?!#";
-    return characters.charAt(Math.floor(Math.random() * characters.length));
+    const shorts = ".,;:";
+    if (len == 0) {
+      return characters.charAt(Math.floor(Math.random() * characters.length));
+    } else {
+      return shorts.charAt(Math.floor(Math.random() * shorts.length));
+    }
   };
   const handleCanStart = () => {
     canStart.current = false;
@@ -50,7 +55,11 @@ const GlitchyText = (props, ref) => {
         }
       }
       if (!indexes.includes(i)) {
-        gl[i] = `${getRandomCharacter()}`;
+        if (letters[i] == "," || letters[i] == ".") {
+          gl[i] = `${getRandomCharacter(1)}`;
+        } else {
+          gl[i] = `${getRandomCharacter(0)}`;
+        }
       }
     }
 
@@ -68,7 +77,7 @@ const GlitchyText = (props, ref) => {
     indexes = [];
     intervalRef.current = setInterval(() => {
       loop();
-    }, 10);
+    }, 40);
   };
 
   return <span>{displayText}</span>;
