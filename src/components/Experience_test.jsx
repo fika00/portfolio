@@ -35,7 +35,7 @@ const Experience = (props, ref) => {
   const clipdown = useRef();
   const { nodes, materials, animations } = useGLTF("./models/eye3.glb");
   const { actions } = useAnimations(animations, group);
-  const play = useSelector((state) => state.position.play);
+  const animationsArePlayingRef = useRef(true);
 
   nodes.eye.morphTargetInfluences[0] = 0.5;
   const materialRef = useRef();
@@ -46,6 +46,7 @@ const Experience = (props, ref) => {
     triggerUVEffect,
     stopUVEffect,
     rotate90,
+    handleAnims,
   }));
 
   const triggerUVEffect = () => {
@@ -138,19 +139,32 @@ const Experience = (props, ref) => {
       }, 3500);
     }
   }, []);
-  useEffect(() => {
-    console.log(play);
-    if (play != 0) {
+  // useEffect(() => {
+  //   console.log(play);
+  //   if (play != 0) {
+  //     actions.action_upper.stop();
+  //     actions.action_lower.stop();
+  //   } else {
+  //     if (!startup.current) {
+  //       actions.action_upper.play();
+  //       actions.action_lower.play();
+  //     }
+  //   }
+  // }, [play, startup]);
+
+  const handleAnims = () => {
+    if (animationsArePlayingRef.current) {
       actions.action_upper.stop();
       actions.action_lower.stop();
+      animationsArePlayingRef.current = false;
     } else {
       if (!startup.current) {
         actions.action_upper.play();
         actions.action_lower.play();
+        animationsArePlayingRef.current = true;
       }
     }
-  }, [play, startup]);
-
+  };
   let speed = 0.04;
 
   useEffect(() => {

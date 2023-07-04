@@ -208,6 +208,8 @@ function App() {
       duration: 2, // Duration of the animation in seconds
     });
     dispatch_it(1);
+    EyeRef.current.handleAnims();
+
     detail_dir.current = 1;
   };
 
@@ -234,6 +236,7 @@ function App() {
       duration: 2, // Duration of the animation in seconds
     });
     dispatch_it(2);
+    EyeRef.current.handleAnims();
     detail_dir.current = 2;
   };
 
@@ -250,7 +253,7 @@ function App() {
 
     dispatch_it(0);
     detail_dir.current = 0;
-
+    EyeRef.current.handleAnims();
     playSound();
   };
 
@@ -433,6 +436,10 @@ function App() {
 
     icoRef.current.position.y = -positionRef.current * 10;
 
+    if (audioRef.current) {
+      audioRef.current.position.z = -positionRef.current * 10;
+    }
+
     // console.log("Position: ", camRef.current.position);
     // console.log("Rotation: ", camRef.current.rotation);
     const scrollb = document.getElementById("scrollbar");
@@ -553,15 +560,7 @@ function App() {
               position={[-2, -30, -30]}
             />
             <Ico rotation={randomRotation()} position={[4, -12, -10]} />
-            {/* <mesh position={[2, -9.5, 0]}>
-              <sphereGeometry args={[1, 12]} />
-              <meshStandardMaterial
-                wireframe
-                emissive={"red"}
-                emissiveIntensity={10}
-                envMap
-              />
-            </mesh> */}
+
             <Sparkles count={60} noise={1} scale={5} speed={0.3} />
             <Sparkles
               position={[0, -10, 0]}

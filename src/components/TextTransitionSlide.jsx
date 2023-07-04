@@ -21,7 +21,7 @@ const TextTransitionSlide = (props, ref) => {
         letters[i].style.transform = "translateX(0%)";
         letters[i].style.opacity = 1;
         letters[i].style.filter = "blur(0px)";
-      }, Math.random() * 200);
+      }, Math.random() * 1500);
     }
   };
   const scatter = () => {
@@ -47,6 +47,7 @@ const TextTransitionSlide = (props, ref) => {
                   style={{
                     transform: `translateX(${generateRandomSide()})`,
                     opacity: 0,
+                    filter: "blur(10px)",
                   }}
                 >
                   {letter}

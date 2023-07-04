@@ -80,10 +80,9 @@
   display: flex;
   align-items: center;
   transition: 0.8s ease;
+  cursor: pointer;
 }
-.arrow:hover {
-  background-color: rgba(60, 121, 121, 0.096);
-}
+
 .tools {
   display: flex;
   justify-content: space-around;
@@ -171,11 +170,13 @@
 @media only screen and (max-width: 600px) {
   .paratext {
     width: 100%;
-    min-width: 90%; /* Add this line */
+    height: 65%;
+    display: flex;
+    justify-content: flex-end;
   }
   .paragraph_text {
     width: 100%;
-    height: unset;
+    height: 60%;
     padding-left: 5px;
     padding-right: 5px;
   }
@@ -190,33 +191,20 @@
   .arrow {
     font-size: 0.6rem;
   }
-  .arrows {
-    position: absolute;
-    gap: 10px;
-    height: 10%;
-    bottom: 0;
-    top: auto;
-    z-index: 99999;
-  }
+
   #displace {
     height: 100%;
   }
   .contentwrapper {
     height: 100%;
-    box-shadow: inset 0 0 30px #000000;
+    box-shadow: inset 0 0 50px #00000053;
 
     overflow: hidden;
   }
   #img {
     display: flex;
   }
-  .right {
-    border-radius: 30px 0px 0px 0px;
-  }
 
-  .left {
-    border-radius: 0px 30px 0px 0px;
-  }
   .imgcont {
     position: relative;
     display: flex;

@@ -26,9 +26,9 @@ const VPcontent = (props) => {
   const titles = ["My mind.", "Pages of Life.", "Halls.", "Society."];
   const text = [
     "My mind is a movie directed by my friend for which I've done this transition.",
-    "Pages of Life tells a story about the importance of memories. For this movie I've done the special effects in the intro.",
-    "A video I made for a music track of mine. I love mixing real and CGI elemnts to tell a story.",
-    "I've done a few video projects for uni. Here's an example of one that I really liked doing.",
+    "Pages of Life tells a story about the importance of memories.",
+    "A video I made for a music track of mine.",
+    "One of my Uni projects.",
   ];
   const links = [
     "https://youtu.be/X1m5gAosXm4",
@@ -74,7 +74,7 @@ const VPcontent = (props) => {
       } else {
         setCurrentIndex(0);
       }
-    }, 500);
+    }, 750);
   };
   const handleGoBack = () => {
     darkenIt();
@@ -86,7 +86,7 @@ const VPcontent = (props) => {
       } else {
         setCurrentIndex(videolist.length - 1);
       }
-    }, 500);
+    }, 750);
   };
   const handleReady = () => {
     const darkenDiv = document.getElementById("darken");
@@ -150,6 +150,8 @@ const VPcontent = (props) => {
             </a>
             <h1 className="vidtitle">{titles[current_index]}</h1>
           </div>
+          <hr className="vpslash" />
+
           <p className="videostory">
             <TextTransitionSlide
               ref={videoStoryRef}
